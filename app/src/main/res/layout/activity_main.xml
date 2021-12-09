@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="200dp"
+        android:layout_height="200dp">
+
+        <ImageView
+            android:id="@+id/loading"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/loading" />
+
+
+        <ImageView
+            android:id="@+id/mixedEmoji"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_launcher_background" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/unicode1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="unicode 1"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/unicode2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="unicode 2"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/input_emoji1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:hint="First emoji"
+            android:imeOptions="actionNext"
+            android:importantForAutofill="no"
+            android:inputType="text|textNoSuggestions"
+            android:singleLine="true"
+            android:textSize="20sp" />
+
+
+        <EditText
+            android:id="@+id/input_emoji2"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:hint="Second emoji"
+            android:imeOptions="actionDone"
+            android:importantForAutofill="no"
+            android:inputType="text|textNoSuggestions"
+            android:singleLine="true"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mixEmojis"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:padding="8dp"
+        android:text="Mix emojis"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        app:backgroundTint="@color/purple_700"
+        app:cornerRadius="8dp" />
+
+</LinearLayout>
