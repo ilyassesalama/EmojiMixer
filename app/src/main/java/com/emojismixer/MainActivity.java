@@ -54,13 +54,17 @@ public class MainActivity extends AppCompatActivity {
         mixedEmoji = findViewById(R.id.mixedEmoji);
 
         mixEmojis.setOnClickListener(view -> {
-            unicode1 = convertEmojisToUnicode(input_emoji1.getText().toString());
-            unicode2 = convertEmojisToUnicode(input_emoji2.getText().toString());
-            tv_unicode1.setText(unicode1);
-            tv_unicode2.setText(unicode2);
-            callingForReverse = false;
-            iteratorCount = 0;
-            mixEmojis(true, unicode1, unicode2);
+            unicode1 = convertEmojisToUnicode(input_emoji1.getText().toString().trim());
+            unicode2 = convertEmojisToUnicode(input_emoji2.getText().toString().trim());
+            if (unicode1.isEmpty() || unicode2.isEmpty()) {
+                Toast.makeText(this, "Enter 1 emoji in both fields", Toast.LENGTH_SHORT).show();
+            } else {
+                tv_unicode1.setText(unicode1);
+                tv_unicode2.setText(unicode2);
+                callingForReverse = false;
+                iteratorCount = 0;
+                mixEmojis(true, unicode1, unicode2);
+            }
         });
     }
 

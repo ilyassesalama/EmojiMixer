@@ -3,15 +3,17 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    useLibrary 'org.apache.http.legacy'
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "com.emojismixer"
-        minSdk 21
-        targetSdk 31
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 88
+        versionName "3.3"
     }
+
 
     buildTypes {
         release {
