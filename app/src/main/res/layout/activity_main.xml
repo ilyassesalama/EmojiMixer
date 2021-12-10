@@ -8,26 +8,39 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/activityTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="EmojisMixer"
-        android:textSize="20sp"
+        android:textColor="#000"
+        android:textSize="23sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/activityDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="60dp"
+        android:gravity="center"
+        android:text="Swipe left or right to mix emojis"
+        android:textSize="14sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
-
 
         <RelativeLayout
             android:layout_width="200dp"
             android:layout_height="200dp">
 
             <ImageView
-                android:id="@+id/loading"
+                android:id="@+id/progressBar"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_centerInParent="true"
@@ -42,93 +55,55 @@
 
         </RelativeLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="60dp"
+            android:orientation="vertical">
 
-
-            <EditText
-                android:id="@+id/input_emoji1"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:hint="First emoji"
-                android:imeOptions="actionNext"
-                android:importantForAutofill="no"
-                android:inputType="text|textNoSuggestions"
-                android:singleLine="true"
-                android:textSize="25sp" />
+                android:layout_height="100dp"
+                android:orientation="vertical">
 
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/emojisSlider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/input_emoji2"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:hint="Second emoji"
-                android:imeOptions="actionDone"
-                android:importantForAutofill="no"
-                android:inputType="text|textNoSuggestions"
-                android:singleLine="true"
-                android:textSize="25sp" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:orientation="horizontal">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mixEmojis"
-                style="@style/Widget.MaterialComponents.Button"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="8dp"
-                android:layout_weight="1"
-                android:gravity="center_horizontal|center_vertical"
-                android:padding="8dp"
-                android:text="Mix emojis"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                app:backgroundTint="@color/purple_700"
-                app:cornerRadius="8dp" />
+                android:gravity="center"
+                android:text="+"
+                android:textSize="40sp"
+                android:textStyle="bold" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/saveEmoji"
-                style="@style/Widget.MaterialComponents.Button"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="8dp"
-                android:layout_weight="1"
-                android:gravity="center_horizontal|center_vertical"
-                android:padding="8dp"
-                android:text="Save emoji"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:visibility="gone"
-                app:backgroundTint="#343434"
-                app:cornerRadius="8dp" />
+                android:layout_height="100dp"
+                android:orientation="vertical">
 
-
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/emojisSlider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/saveEmoji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="25dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Save emoji"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        app:backgroundTint="#2A2B28" />
 </LinearLayout>

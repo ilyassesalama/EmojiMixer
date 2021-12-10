@@ -14,18 +14,18 @@ import java.util.ArrayList;
 
 public class CheckEmojiExistence implements Runnable {
 
+    private final String emoji_1;
+    private final String emoji_2;
+    private final ArrayList<String> dates;
+    private final Activity mContext;
+    private final String LOG = "EMOJI_LOGS";
     public int currentPosition = 0;
     public String API = "https://www.gstatic.com/android/keyboard/emojikitchen/";
     public EmojiListener listener;
-    private final String emoji_1;
-    private final String emoji_2;
     private String finalURL;
     private String failure_reason;
-    private final ArrayList<String> dates;
-    private final Activity mContext;
     private boolean isTaskSuccessful = false;
     private boolean shouldAbortTask = false;
-    private final String LOG = "EMOJI_LOGS";
 
     public CheckEmojiExistence(String emoji1, String emoji2, Activity context, EmojiListener emojiListener) {
         this.listener = emojiListener;
