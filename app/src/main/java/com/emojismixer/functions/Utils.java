@@ -1,12 +1,13 @@
 package com.emojismixer.functions;
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.Uri;
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou;
+import com.ahmadrosid.svgloader.SvgLoader;
+
+import java.io.InputStream;
+import java.net.URL;
 
 public class Utils {
 
@@ -24,15 +25,23 @@ public class Utils {
         return sb.toString();
     }
 
-    public static void setImageFromUri(ImageView image, String url, Context context) {
-        Glide.with(context)
-                .load(url)
-                .fitCenter()
-                .into(image);
+    public static void setImageFromUri(ImageView image, String url, Activity context) {
+        new Thread(() -> {
+            try {
+                InputStream is = (InputStream) new URL(url).getContent();
+                Drawable d = Drawable.createFromStream(is, "src");
+                image.setImageDrawable(d);
+            } catch (Exception ignored) {
+            }
+            context.runOnUiThread(() -> {
+            });
+        }).start();
+
     }
 
     public static void setSVGFromUrl(ImageView image, String url, Activity context) {
-        Uri uri = Uri.parse(url);
-        GlideToVectorYou.justLoadImage(context, uri, image);
+        SvgLoader.pluck()
+                .with(context)
+                .load(url, image);
     }
 }

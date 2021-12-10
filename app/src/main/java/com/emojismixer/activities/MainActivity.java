@@ -155,14 +155,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addDataToSliders(String data) {
-        supportedEmojisList = new Gson().fromJson(data, new TypeToken<ArrayList<HashMap<String, Object>>>() {
-        }.getType());
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
-            emojisSlider1.setAdapter(new EmojisSliderAdapter(supportedEmojisList, MainActivity.this));
-            emojisSlider2.setAdapter(new EmojisSliderAdapter(supportedEmojisList, MainActivity.this));
+            supportedEmojisList = new Gson().fromJson(data, new TypeToken<ArrayList<HashMap<String, Object>>>() {
+            }.getType());
             handler.post(() -> {
+                emojisSlider1.setAdapter(new EmojisSliderAdapter(supportedEmojisList, MainActivity.this));
+                emojisSlider2.setAdapter(new EmojisSliderAdapter(supportedEmojisList, MainActivity.this));
                 new Handler().postDelayed(() -> {
                     for (int i = 0; i < 2; i++) {
                         Random rand = new Random();
