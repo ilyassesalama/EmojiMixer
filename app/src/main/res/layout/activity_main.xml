@@ -3,116 +3,132 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:layout_marginTop="20dp"
+    android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="200dp"
-        android:layout_height="200dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="EmojisMixer"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/loading"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/loading" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/mixedEmoji"
+
+        <RelativeLayout
             android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/shocked" />
+            android:layout_height="200dp">
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/loading"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/loading" />
 
+            <ImageView
+                android:id="@+id/mixedEmoji"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/shocked" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-        <EditText
-            android:id="@+id/input_emoji1"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:hint="First emoji"
-            android:imeOptions="actionNext"
-            android:importantForAutofill="no"
-            android:inputType="text|textNoSuggestions"
-            android:singleLine="true"
-            android:textSize="25sp" />
+        </RelativeLayout>
 
 
-        <EditText
-            android:id="@+id/input_emoji2"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:hint="Second emoji"
-            android:imeOptions="actionDone"
-            android:importantForAutofill="no"
-            android:inputType="text|textNoSuggestions"
-            android:singleLine="true"
-            android:textSize="25sp" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:orientation="horizontal">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mixEmojis"
-            style="@style/Widget.MaterialComponents.Button"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal|center_vertical"
-            android:padding="8dp"
-            android:text="Mix emojis"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp"
-            app:backgroundTint="@color/purple_700"
-            app:cornerRadius="8dp" />
+            android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/saveEmoji"
-            style="@style/Widget.MaterialComponents.Button"
+
+            <EditText
+                android:id="@+id/input_emoji1"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="First emoji"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:inputType="text|textNoSuggestions"
+                android:singleLine="true"
+                android:textSize="25sp" />
+
+
+            <EditText
+                android:id="@+id/input_emoji2"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="Second emoji"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="text|textNoSuggestions"
+                android:singleLine="true"
+                android:textSize="25sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal|center_vertical"
-            android:padding="8dp"
-            android:text="Save emoji"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:visibility="gone"
-            app:backgroundTint="#343434"
-            app:cornerRadius="8dp" />
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mixEmojis"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:padding="8dp"
+                android:text="Mix emojis"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                app:backgroundTint="@color/purple_700"
+                app:cornerRadius="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/saveEmoji"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center_vertical"
+                android:padding="8dp"
+                android:text="Save emoji"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:backgroundTint="#343434"
+                app:cornerRadius="8dp" />
 
 
+        </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>
