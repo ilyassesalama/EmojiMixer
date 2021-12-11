@@ -27,6 +27,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -142,14 +143,21 @@ public class MainActivity extends AppCompatActivity {
     private void viewpagerTransformation(ViewPager2 viewpager) {
         viewpager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
 
-        viewpager.setClipToPadding(false);
-        viewpager.setClipChildren(false);
+      //viewpager.setClipToPadding(false);
         viewpager.setOffscreenPageLimit(1);
+        int pageMarginPx = getResources().getDimensionPixelOffset(R.dimen.margin_card);
+        int peekMarginPx = getResources().getDimensionPixelOffset(R.dimen.peek_offset_card);
+
+        RecyclerView rv = (RecyclerView) viewpager.getChildAt(0);
+        rv.setClipToPadding(false);
+        int padding = peekMarginPx + pageMarginPx;
+        rv.setPadding(padding, 0, padding, 0);
 
         CompositePageTransformer transformer = new CompositePageTransformer();
         transformer.addTransformer((page, position) -> {
             float a = 1 - Math.abs(position);
             page.setScaleY(0.85f + a * 0.15f);
+            page.setScaleX(0.85f + a * 0.15f);
         });
         viewpager.setPageTransformer(transformer);
     }
