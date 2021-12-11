@@ -320,8 +320,6 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Log.e("Download error", e.toString());
             }
-            handler.post(() -> {
-            });
         });
     }
 
