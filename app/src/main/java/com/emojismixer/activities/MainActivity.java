@@ -266,7 +266,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (shouldShow) {
             new Handler().postDelayed(() -> {
-          //  colorAnimator(saveEmoji, "#2A2B28", "#FF9D05", 150);
             saveEmoji.setBackgroundColor(getDominantColor(mixedEmoji));
             saveEmoji.setEnabled(true);
             saveEmoji.setTextColor(Color.parseColor("#422B0D"));
