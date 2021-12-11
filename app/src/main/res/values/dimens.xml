@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_card">30dp</dimen>
+    <dimen name="peek_offset_card">100dp</dimen>
+</resources>
