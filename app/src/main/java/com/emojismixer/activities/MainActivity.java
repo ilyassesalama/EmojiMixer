@@ -12,7 +12,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +33,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
@@ -262,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (shouldShow) {
             new Handler().postDelayed(() -> {
-            colorAnimator(saveEmoji, "#2A2B28", "#FF9D05", 150);
+            saveEmoji.setBackgroundColor(getDominantColor(mixedEmoji));
             saveEmoji.setEnabled(true);
             saveEmoji.setTextColor(Color.parseColor("#422B0D"));
             saveEmoji.setIconTint(ColorStateList.valueOf(Color.parseColor("#422B0D")));
@@ -320,4 +324,18 @@ public class MainActivity extends AppCompatActivity {
             });
         });
     }
+
+    public int getDominantColor(ImageView Iview) {
+        Drawable drawable = Iview.getDrawable();
+        BitmapDrawable bitDraw = (BitmapDrawable) drawable;
+        if (bitDraw != null) {
+            Bitmap bitmap = bitDraw.getBitmap();
+            Palette palette = Palette.generate(bitmap);
+            int vibrant = palette.getVibrantColor(0x000000);
+            return vibrant;
+        } else {
+            return Color.parseColor("#FF9D05");
+        }
+    }
+
 }
