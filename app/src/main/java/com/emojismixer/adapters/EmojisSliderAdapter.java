@@ -1,10 +1,9 @@
 package com.emojismixer.adapters;
 
-import static com.emojismixer.functions.Utils.setSVGFromUrl;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,12 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.emojismixer.R;
 
 import java.util.ArrayList;
@@ -45,9 +50,16 @@ public class EmojisSliderAdapter extends RecyclerView.Adapter<EmojisSliderAdapte
 
         String unicode = Integer.toHexString((int) hex);
 
-        String emojiURL = "https://ilyassesalama.github.io/EmojisMixer/emojis/supported_emojis/" + unicode + ".svg";
+        String emojiURL = "https://ilyassesalama.github.io/EmojisMixer/emojis/supported_emojis_png/" + unicode + ".png";
 
-        setSVGFromUrl(holder.emoji, emojiURL, (Activity) mContext);
+        loadEmojiFromUrl(holder.emoji, holder.progressBar, emojiURL);
+
+
+        holder.emoji.setOnClickListener(v -> {
+//            if (data.get(position + 1).containsKey("emojiHexCode")) {
+//
+//            }
+        });
 
         RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         view.setLayoutParams(_lp);
@@ -61,10 +73,34 @@ public class EmojisSliderAdapter extends RecyclerView.Adapter<EmojisSliderAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView emoji;
+        ImageView progressBar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             emoji = itemView.findViewById(R.id.emoji);
+            progressBar = itemView.findViewById(R.id.progressBar);
         }
+    }
+
+    private void loadEmojiFromUrl(ImageView image, ImageView progressBar, String url) {
+        Glide.with(mContext)
+                .load(url)
+                .fitCenter()
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .listener(new RequestListener<Drawable>() {
+                              @Override
+                              public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+
+                                  return false;
+                              }
+
+                              @Override
+                              public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                  progressBar.setVisibility(View.GONE);
+                                  return false;
+                              }
+                          }
+                )
+                .into(image);
     }
 }

@@ -1,8 +1,9 @@
 package com.emojismixer.activities;
 
+import static com.emojismixer.functions.UIMethods.colorAnimator;
 import static com.emojismixer.functions.UIMethods.rotateAnimation;
 import static com.emojismixer.functions.UIMethods.shadAnim;
-import static com.emojismixer.functions.Utils.setImageFromUri;
+import static com.emojismixer.functions.Utils.setImageFromUrl;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,6 +11,8 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -83,18 +86,18 @@ public class MainActivity extends AppCompatActivity {
         requestSupportedEmojis = new RequestNetwork(this);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
-//        mixEmojis.setOnClickListener(view -> {
-//            emote1 = input_emoji1.getText().toString().trim();
-//            emote2 = input_emoji2.getText().toString().trim();
-//
-//            if (emote1.isEmpty() || emote2.isEmpty()) {
-//                Toast.makeText(this, "Enter 1 emoji in both fields", Toast.LENGTH_SHORT).show();
-//            } else {
-//                showEmoji(false);
-//                mixEmojis(emote1, emote2);
-//            }
-//        });
-//
+        mixedEmoji.setOnClickListener(view -> {
+            for (int i = 0; i < 2; i++) {
+                Random rand = new Random();
+                int randomNum = rand.nextInt((supportedEmojisList.size()) + 1);
+                if (i == 0) {
+                    emojisSlider1.setCurrentItem(randomNum);
+                } else {
+                    emojisSlider2.setCurrentItem(randomNum);
+                }
+            }
+        });
+
         saveEmoji.setOnClickListener(view -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 downloadFile(finalEmojiURL);
@@ -128,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void LOGIC_BACKEND() {
-        saveEmoji.setTranslationY(50);
-        saveEmoji.setAlpha(0);
         viewpagerTransformation(emojisSlider1);
         viewpagerTransformation(emojisSlider2);
         rotateAnimation(progressBar);
@@ -143,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
     private void viewpagerTransformation(ViewPager2 viewpager) {
         viewpager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
 
-      //viewpager.setClipToPadding(false);
         viewpager.setOffscreenPageLimit(1);
         int pageMarginPx = getResources().getDimensionPixelOffset(R.dimen.margin_card);
         int peekMarginPx = getResources().getDimensionPixelOffset(R.dimen.peek_offset_card);
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                     double hex1 = (double) supportedEmojisList.get(emojisSlider2.getCurrentItem()).get("emojiHexCode");
                     emote1 = "u" + Integer.toHexString((int) hex);
                     emote2 = "u" + Integer.toHexString((int) hex1);
-                    showEmoji(false);
+                    shouldShowEmoji(false);
                     mixEmojis(emote1, emote2);
                     registerViewPagersListener();
                 }, 1000);
@@ -198,9 +198,12 @@ public class MainActivity extends AppCompatActivity {
         emojisSlider1.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
+                new Handler().postDelayed(() -> {
+
+                }, 100);
                 double hex = (double) supportedEmojisList.get(position).get("emojiHexCode");
                 emote1 = "u" + Integer.toHexString((int) hex);
-                showEmoji(false);
+                shouldShowEmoji(false);
                 mixEmojis(emote1, emote2);
             }
         });
@@ -209,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 double hex = (double) supportedEmojisList.get(position).get("emojiHexCode");
                 emote2 = "u" + Integer.toHexString((int) hex);
-                showEmoji(false);
+                shouldShowEmoji(false);
                 mixEmojis(emote1, emote2);
             }
         });
@@ -217,29 +220,26 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void mixEmojis(String emoji1, String emoji2) {
+        shouldEnableSave(false);
         progressBar.setVisibility(View.VISIBLE);
-        shadAnim(saveEmoji, "alpha", 0, 300);
-        shadAnim(saveEmoji, "translationY", 50, 300);
 
         CheckEmojiExistence cee = new CheckEmojiExistence(emoji1, emoji2, this, new EmojiListener() {
             @Override
             public void onSuccess(String emojiUrl) {
                 finalEmojiURL = emojiUrl;
-                showEmoji(true);
-                progressBar.setVisibility(View.INVISIBLE);
-                shadAnim(saveEmoji, "alpha", 1, 300);
-                shadAnim(saveEmoji, "translationY", 0, 300);
-                setImageFromUri(mixedEmoji, emojiUrl, MainActivity.this);
+                shouldShowEmoji(true);
+                progressBar.setVisibility(View.GONE);
+                shouldEnableSave(true);
+                setImageFromUrl(mixedEmoji, emojiUrl, MainActivity.this);
             }
 
             @Override
             public void onFailure(String failureReason) {
                 changeActivityDesc(failureReason);
-                shadAnim(saveEmoji, "alpha", 0, 300);
-                shadAnim(saveEmoji, "translationY", 50, 300);
+                shouldEnableSave(false);
                 mixedEmoji.setImageResource(R.drawable.sad);
-                showEmoji(true);
-                progressBar.setVisibility(View.INVISIBLE);
+                shouldShowEmoji(true);
+                progressBar.setVisibility(View.GONE);
             }
         });
 
@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void showEmoji(boolean shouldShow) {
+    private void shouldShowEmoji(boolean shouldShow) {
         if (shouldShow) {
             shadAnim(mixedEmoji, "scaleY", 1, 300);
             shadAnim(mixedEmoji, "scaleX", 1, 300);
@@ -256,6 +256,24 @@ public class MainActivity extends AppCompatActivity {
             shadAnim(mixedEmoji, "scaleY", 0, 300);
             shadAnim(mixedEmoji, "scaleX", 0, 300);
         }
+    }
+
+    private void shouldEnableSave(boolean shouldShow) {
+
+        if (shouldShow) {
+            new Handler().postDelayed(() -> {
+            colorAnimator(saveEmoji, "#2A2B28", "#FF9D05", 150);
+            saveEmoji.setEnabled(true);
+            saveEmoji.setTextColor(Color.parseColor("#422B0D"));
+            saveEmoji.setIconTint(ColorStateList.valueOf(Color.parseColor("#422B0D")));
+            }, 1000);
+        } else {
+            colorAnimator(saveEmoji, "#FF9D05", "#2A2B28", 250);
+            saveEmoji.setEnabled(false);
+            saveEmoji.setTextColor(Color.parseColor("#A3A3A3"));
+            saveEmoji.setIconTint(ColorStateList.valueOf(Color.parseColor("#A3A3A3")));
+        }
+
     }
 
     private void changeActivityDesc(String text) {

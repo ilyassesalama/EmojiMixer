@@ -1,6 +1,8 @@
 package com.emojismixer.functions;
 
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.graphics.Color;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -23,6 +25,16 @@ public class UIMethods {
         rotate.setRepeatCount(Animation.INFINITE);
         rotate.setInterpolator(new LinearInterpolator());
         view.startAnimation(rotate);
+    }
+
+    public static void colorAnimator(final View view, final String color1, final String color2, final double duration) {
+        android.animation.ValueAnimator colorAnimation = android.animation.ValueAnimator.ofObject(new ArgbEvaluator(), Color.parseColor(color1), Color.parseColor(color2));
+        colorAnimation.addUpdateListener(animator -> {
+            int color = (int) animator.getAnimatedValue();
+            view.setBackgroundColor(color);
+        });
+        colorAnimation.setDuration((int) duration);
+        colorAnimation.start();
     }
 
 }

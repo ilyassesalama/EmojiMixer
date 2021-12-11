@@ -1,13 +1,9 @@
 package com.emojismixer.functions;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
-import com.ahmadrosid.svgloader.SvgLoader;
-
-import java.io.InputStream;
-import java.net.URL;
+import com.bumptech.glide.Glide;
 
 public class Utils {
 
@@ -25,23 +21,11 @@ public class Utils {
         return sb.toString();
     }
 
-    public static void setImageFromUri(ImageView image, String url, Activity context) {
-        new Thread(() -> {
-            try {
-                InputStream is = (InputStream) new URL(url).getContent();
-                Drawable d = Drawable.createFromStream(is, "src");
-                image.setImageDrawable(d);
-            } catch (Exception ignored) {
-            }
-            context.runOnUiThread(() -> {
-            });
-        }).start();
+    public static void setImageFromUrl(ImageView image, String url, Activity context) {
+        Glide.with(context)
+                .load(url)
+                .fitCenter()
+                .into(image);
 
-    }
-
-    public static void setSVGFromUrl(ImageView image, String url, Activity context) {
-        SvgLoader.pluck()
-                .with(context)
-                .load(url, image);
     }
 }
