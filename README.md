@@ -2,7 +2,7 @@
  An app that mixes emojis using Google Emoji Kitchen API mainly inspired from [emojimix](https://tikolu.net/emojimix/).
 
 ## Preview
-<img src="/Screenshots/emojismixer_preview.gif" width="400">
+<img src="/Screenshots/emojismixer_preview.gif" width="300" height="600">
 
 ## To-do
  - Emojis picker: since all emojis are not supported, there should an emoji picker that shows all supported emojis.
