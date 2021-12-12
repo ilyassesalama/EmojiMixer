@@ -304,7 +304,6 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Download started, check notifications bar.", Toast.LENGTH_SHORT).show();
         String fileName = "MixedEmoji_" + new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.US).format(new Date());
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
             try {
                 DownloadManager downloadmanager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);

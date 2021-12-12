@@ -101,11 +101,7 @@ public class RequestNetworkController {
                 if (method.equals(GET)) {
                     HttpUrl.Builder httpBuilder;
 
-                    try {
-                        httpBuilder = Objects.requireNonNull(HttpUrl.parse(url)).newBuilder();
-                    } catch (NullPointerException ne) {
-                        throw new NullPointerException("unexpected url: " + url);
-                    }
+                    httpBuilder = Objects.requireNonNull(HttpUrl.parse(url), "Unexpected url: " + url).newBuilder();
 
                     if (requestNetwork.getParams().size() > 0) {
                         HashMap<String, Object> params = requestNetwork.getParams();

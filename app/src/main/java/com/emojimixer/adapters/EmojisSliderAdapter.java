@@ -87,10 +87,10 @@ public class EmojisSliderAdapter extends RecyclerView.Adapter<EmojisSliderAdapte
                 .load(url)
                 .fitCenter()
                 .transition(DrawableTransitionOptions.withCrossFade())
-                .listener(new RequestListener<Drawable>() {
+                .listener(
+                          new RequestListener<Drawable>() {
                               @Override
                               public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-
                                   return false;
                               }
 
