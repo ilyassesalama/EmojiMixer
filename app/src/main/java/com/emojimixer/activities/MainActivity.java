@@ -1,9 +1,9 @@
-package com.emojismixer.activities;
+package com.emojimixer.activities;
 
-import static com.emojismixer.functions.UIMethods.colorAnimator;
-import static com.emojismixer.functions.UIMethods.rotateAnimation;
-import static com.emojismixer.functions.UIMethods.shadAnim;
-import static com.emojismixer.functions.Utils.setImageFromUrl;
+import static com.emojimixer.functions.UIMethods.colorAnimator;
+import static com.emojimixer.functions.UIMethods.rotateAnimation;
+import static com.emojimixer.functions.UIMethods.shadAnim;
+import static com.emojimixer.functions.Utils.setImageFromUrl;
 
 import android.Manifest;
 import android.app.Activity;
@@ -34,12 +34,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.emojismixer.R;
-import com.emojismixer.adapters.EmojisSliderAdapter;
-import com.emojismixer.functions.CheckEmojiExistence;
-import com.emojismixer.functions.CheckEmojiExistence.EmojiListener;
-import com.emojismixer.functions.RequestNetwork;
-import com.emojismixer.functions.RequestNetworkController;
+import com.emojimixer.R;
+import com.emojimixer.adapters.EmojisSliderAdapter;
+import com.emojimixer.functions.CheckEmojiExistence;
+import com.emojimixer.functions.CheckEmojiExistence.EmojiListener;
+import com.emojimixer.functions.RequestNetwork;
+import com.emojimixer.functions.RequestNetworkController;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         viewpagerTransformation(emojisSlider2);
         rotateAnimation(progressBar);
         if (sharedPref.getString("supportedEmojisList", "").isEmpty()) {
-            requestSupportedEmojis.startRequestNetwork(RequestNetworkController.GET, "https://ilyassesalama.github.io/EmojisMixer/emojis/supported_emojis.json", "", requestSupportedEmojisListener);
+            requestSupportedEmojis.startRequestNetwork(RequestNetworkController.GET, "https://ilyassesalama.github.io/EmojiMixer/emojis/supported_emojis.json", "", requestSupportedEmojisListener);
         } else {
             addDataToSliders(sharedPref.getString("supportedEmojisList", ""));
         }

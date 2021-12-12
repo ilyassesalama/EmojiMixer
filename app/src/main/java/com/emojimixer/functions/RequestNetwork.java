@@ -1,4 +1,4 @@
-package com.emojismixer.functions;
+package com.emojimixer.functions;
 
 import android.app.Activity;
 

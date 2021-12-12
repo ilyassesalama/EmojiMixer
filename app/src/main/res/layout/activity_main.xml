@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="EmojisMixer"
+        android:text="@string/app_name"
         android:textColor="#000"
         android:textSize="23sp"
         android:textStyle="bold" />

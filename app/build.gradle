@@ -7,13 +7,12 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        applicationId "com.emojismixer"
+        applicationId "com.emojimixer"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 88
         versionName "3.3"
     }
-
 
     buildTypes {
         release {
@@ -39,6 +38,4 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.3'
     implementation 'com.google.code.gson:gson:2.8.9'
-
-
 }

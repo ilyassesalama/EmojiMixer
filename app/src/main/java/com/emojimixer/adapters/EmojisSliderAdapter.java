@@ -1,4 +1,4 @@
-package com.emojismixer.adapters;
+package com.emojimixer.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,7 +18,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.emojismixer.R;
+import com.emojimixer.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +50,7 @@ public class EmojisSliderAdapter extends RecyclerView.Adapter<EmojisSliderAdapte
 
         String unicode = Integer.toHexString((int) hex);
 
-        String emojiURL = "https://ilyassesalama.github.io/EmojisMixer/emojis/supported_emojis_png/" + unicode + ".png";
+        String emojiURL = "https://ilyassesalama.github.io/EmojiMixer/emojis/supported_emojis_png/" + unicode + ".png";
 
         loadEmojiFromUrl(holder.emoji, holder.progressBar, emojiURL);
 
