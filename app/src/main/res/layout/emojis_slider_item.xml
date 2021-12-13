@@ -2,18 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center">
 
     <RelativeLayout
         android:layout_width="100dp"
         android:layout_height="100dp">
 
-        <ImageView
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progressBar"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:indeterminate="true"
+            android:padding="10dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/loading" />
+            app:indicatorColor="#F7C02B"
+            app:indicatorSize="30dp"
+            app:trackCornerRadius="10dp"
+            app:trackThickness="3dp" />
 
         <ImageView
             android:id="@+id/emoji"
