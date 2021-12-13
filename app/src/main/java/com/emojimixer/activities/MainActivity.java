@@ -1,7 +1,6 @@
 package com.emojimixer.activities;
 
 import static com.emojimixer.functions.UIMethods.colorAnimator;
-import static com.emojimixer.functions.UIMethods.rotateAnimation;
 import static com.emojimixer.functions.UIMethods.shadAnim;
 import static com.emojimixer.functions.Utils.setImageFromUrl;
 
@@ -40,11 +39,11 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.emojimixer.R;
 import com.emojimixer.adapters.EmojisSliderAdapter;
-import com.emojimixer.functions.CheckEmojiExistence;
-import com.emojimixer.functions.CheckEmojiExistence.EmojiListener;
+import com.emojimixer.functions.EmojiMixer;
 import com.emojimixer.functions.RequestNetwork;
 import com.emojimixer.functions.RequestNetworkController;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -53,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -60,11 +60,11 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton saveEmoji;
     private ImageView mixedEmoji;
-    private ImageView progressBar;
+    private CircularProgressIndicator progressBar;
     private TextView activityDesc;
-    private String emote1 = "";
-    private String emote2 = "";
-    private String finalEmojiURL = "";
+    private String emote1;
+    private String emote2;
+    private String finalEmojiURL;
     private ViewPager2 emojisSlider1;
     private ViewPager2 emojisSlider2;
     private ArrayList<HashMap<String, Object>> supportedEmojisList = new ArrayList<>();
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     }.getType());
                     sharedPref.edit().putString("supportedEmojisList", new Gson().toJson(supportedEmojisList)).apply();
                     addDataToSliders(response);
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                 }
             }
 
@@ -137,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
     private void LOGIC_BACKEND() {
         viewpagerTransformation(emojisSlider1);
         viewpagerTransformation(emojisSlider2);
-        rotateAnimation(progressBar);
         if (sharedPref.getString("supportedEmojisList", "").isEmpty()) {
             requestSupportedEmojis.startRequestNetwork(RequestNetworkController.GET, "https://ilyassesalama.github.io/EmojiMixer/emojis/supported_emojis.json", "", requestSupportedEmojisListener);
         } else {
@@ -185,12 +184,11 @@ public class MainActivity extends AppCompatActivity {
                             emojisSlider2.setCurrentItem(randomNum);
                         }
                     }
-                    double hex = (double) supportedEmojisList.get(emojisSlider1.getCurrentItem()).get("emojiHexCode");
-                    double hex1 = (double) supportedEmojisList.get(emojisSlider2.getCurrentItem()).get("emojiHexCode");
-                    emote1 = "u" + Integer.toHexString((int) hex);
-                    emote2 = "u" + Integer.toHexString((int) hex1);
+
+                    emote1 = Objects.requireNonNull(supportedEmojisList.get(emojisSlider1.getCurrentItem()).get("emojiUnicode")).toString();
+                    emote2 = Objects.requireNonNull(supportedEmojisList.get(emojisSlider2.getCurrentItem()).get("emojiUnicode")).toString();
                     shouldShowEmoji(false);
-                    mixEmojis(emote1, emote2);
+                    mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(emojisSlider2.getCurrentItem()).get("date")).toString());
                     registerViewPagersListener();
                 }, 1000);
 
@@ -205,29 +203,27 @@ public class MainActivity extends AppCompatActivity {
                 new Handler().postDelayed(() -> {
 
                 }, 100);
-                double hex = (double) supportedEmojisList.get(position).get("emojiHexCode");
-                emote1 = "u" + Integer.toHexString((int) hex);
+                emote1 = Objects.requireNonNull(supportedEmojisList.get(position).get("emojiUnicode")).toString();
                 shouldShowEmoji(false);
-                mixEmojis(emote1, emote2);
+                mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(position).get("date")).toString());
             }
         });
         emojisSlider2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
-                double hex = (double) supportedEmojisList.get(position).get("emojiHexCode");
-                emote2 = "u" + Integer.toHexString((int) hex);
+                emote2 = Objects.requireNonNull(supportedEmojisList.get(position).get("emojiUnicode")).toString();
                 shouldShowEmoji(false);
-                mixEmojis(emote1, emote2);
+                mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(position).get("date")).toString());
             }
         });
     }
 
 
-    private void mixEmojis(String emoji1, String emoji2) {
+    private void mixEmojis(String emoji1, String emoji2, String date) {
         shouldEnableSave(false);
         progressBar.setVisibility(View.VISIBLE);
 
-        CheckEmojiExistence cee = new CheckEmojiExistence(emoji1, emoji2, this, new EmojiListener() {
+        EmojiMixer em = new EmojiMixer(emoji1, emoji2, date, this, new EmojiMixer.EmojiListener() {
             @Override
             public void onSuccess(String emojiUrl) {
                 finalEmojiURL = emojiUrl;
@@ -246,8 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
             }
         });
-
-        Thread thread = new Thread(cee);
+        Thread thread = new Thread(em);
         thread.start();
     }
 
@@ -266,10 +261,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (shouldShow) {
             new Handler().postDelayed(() -> {
-            saveEmoji.setBackgroundColor(getDominantColor(mixedEmoji));
-            saveEmoji.setEnabled(true);
-            saveEmoji.setTextColor(Color.parseColor("#422B0D"));
-            saveEmoji.setIconTint(ColorStateList.valueOf(Color.parseColor("#422B0D")));
+                saveEmoji.setBackgroundColor(getDominantColor(mixedEmoji));
+                saveEmoji.setEnabled(true);
+                saveEmoji.setTextColor(Color.parseColor("#422B0D"));
+                saveEmoji.setIconTint(ColorStateList.valueOf(Color.parseColor("#422B0D")));
             }, 1000);
         } else {
             colorAnimator(saveEmoji, "#FF9D05", "#2A2B28", 250);
@@ -291,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
                 shadAnim(activityDesc, "alpha", 0, 300);
                 shadAnim(activityDesc, "translationY", -50, 300);
                 new Handler().postDelayed(() -> {
-                    activityDesc.setText("Swipe left or right to mix emojis");
+                    activityDesc.setText(R.string.activity_hint_1);
                     shadAnim(activityDesc, "alpha", 1, 300);
                     shadAnim(activityDesc, "translationY", 0, 300);
                 }, 400);
@@ -311,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
                 request.setMimeType(getContentResolver().getType(Uri.parse(url)));
                 request.addRequestHeader("cookie", CookieManager.getInstance().getCookie(url));
                 request.setTitle(fileName);
-                request.setDescription("Downloading your cool mixed emoji...");
+                request.setDescription(getString(R.string.downloading));
                 request.allowScanningByMediaScanner();
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/MixedEmojis/" + fileName + URLUtil.guessFileName(url, "", ""));
@@ -322,14 +317,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public int getDominantColor(ImageView Iview) {
-        Drawable drawable = Iview.getDrawable();
+    public int getDominantColor(ImageView image) {
+        Drawable drawable = image.getDrawable();
         BitmapDrawable bitDraw = (BitmapDrawable) drawable;
         if (bitDraw != null) {
             Bitmap bitmap = bitDraw.getBitmap();
             Palette palette = Palette.generate(bitmap);
-            int vibrant = palette.getVibrantColor(0x000000);
-            return vibrant;
+            return palette.getVibrantColor(0x000000);
         } else {
             return Color.parseColor("#FF9D05");
         }

@@ -1,5 +1,6 @@
 package com.emojimixer.adapters;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,15 +20,17 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.emojimixer.R;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 
 public class EmojisSliderAdapter extends RecyclerView.Adapter<EmojisSliderAdapter.ViewHolder> {
     private final Context mContext;
     private final SharedPreferences sharedPref;
-    ArrayList<HashMap<String, Object>> data;
+    private ArrayList<HashMap<String, Object>> data;
 
     public EmojisSliderAdapter(ArrayList<HashMap<String, Object>> _arr, Context context) {
         mContext = context;
@@ -46,19 +49,14 @@ public class EmojisSliderAdapter extends RecyclerView.Adapter<EmojisSliderAdapte
     public void onBindViewHolder(ViewHolder holder, final int position) {
         View view = holder.itemView;
 
-        double hex = (double) data.get(position).get("emojiHexCode");
-
-        String unicode = Integer.toHexString((int) hex);
+        String unicode = Objects.requireNonNull(data.get(position).get("emojiUnicode")).toString();
 
         String emojiURL = "https://ilyassesalama.github.io/EmojiMixer/emojis/supported_emojis_png/" + unicode + ".png";
 
         loadEmojiFromUrl(holder.emoji, holder.progressBar, emojiURL);
 
-
         holder.emoji.setOnClickListener(v -> {
-//            if (data.get(position + 1).containsKey("emojiHexCode")) {
-//
-//            }
+            //here we should go to next or previous emoji just by clicking it in addition to sliding
         });
 
         RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -73,7 +71,7 @@ public class EmojisSliderAdapter extends RecyclerView.Adapter<EmojisSliderAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView emoji;
-        ImageView progressBar;
+        CircularProgressIndicator progressBar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,7 +80,7 @@ public class EmojisSliderAdapter extends RecyclerView.Adapter<EmojisSliderAdapte
         }
     }
 
-    private void loadEmojiFromUrl(ImageView image, ImageView progressBar, String url) {
+    private void loadEmojiFromUrl(ImageView image, CircularProgressIndicator progressBar, String url) {
         Glide.with(mContext)
                 .load(url)
                 .fitCenter()
