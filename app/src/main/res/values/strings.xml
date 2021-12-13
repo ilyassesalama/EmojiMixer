@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">EmojiMixer</string>
+    <string name="activity_hint_1">Swipe left or right to mix emojis</string>
+    <string name="downloading">Downloading your cool mixed emoji...</string>
 </resources>
