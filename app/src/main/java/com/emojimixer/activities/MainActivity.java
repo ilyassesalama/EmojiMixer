@@ -119,12 +119,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
                 try {
-                    supportedEmojisList = new Gson().fromJson(response, new TypeToken<ArrayList<HashMap<String, Object>>>() {
-                    }.getType());
-                    sharedPref.edit().putString("supportedEmojisList", new Gson().toJson(supportedEmojisList)).apply();
+                    sharedPref.edit().putString("supportedEmojisList", response).apply();
                     addDataToSliders(response);
-                } catch (Exception ignored) {
-                }
+                } catch (Exception ignored) { }
             }
 
             @Override
@@ -185,9 +182,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
+                    shouldShowEmoji(false);
                     emote1 = Objects.requireNonNull(supportedEmojisList.get(emojisSlider1.getCurrentItem()).get("emojiUnicode")).toString();
                     emote2 = Objects.requireNonNull(supportedEmojisList.get(emojisSlider2.getCurrentItem()).get("emojiUnicode")).toString();
-                    shouldShowEmoji(false);
                     mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(emojisSlider2.getCurrentItem()).get("date")).toString());
                     registerViewPagersListener();
                 }, 1000);
