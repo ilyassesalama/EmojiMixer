@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">EmojiMixer</string>
+    <string name="app_name" translatable="false">EmojiMixer</string>
     <string name="activity_hint_1">Swipe left or right to mix emojis</string>
-    <string name="downloading">Downloading your cool mixed emoji...</string>
+    <!-- "&#*@#" is the unicode of ellipsis character, and is better as "..." may get wrapped around -->
+    <string name="downloading">Downloading your cool mixed emoji&#8230;</string>
+    <string name="swipe_left_or_right_to_mix_emojis">Swipe left or right to mix emojis</string>
+    <string name="save_emoji">Save emoji</string>
 </resources>
