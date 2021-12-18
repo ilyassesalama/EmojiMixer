@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
         BitmapDrawable bitDraw = (BitmapDrawable) drawable;
         if (bitDraw != null) {
             Bitmap bitmap = bitDraw.getBitmap();
-            Palette palette = Palette.generate(bitmap);
+            Palette palette = Palette.from(bitmap).generate();
             return palette.getVibrantColor(0x000000);
         } else {
             return Color.parseColor("#FF9D05");
