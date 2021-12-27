@@ -5,9 +5,6 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 
 public class UIMethods {
 
@@ -19,7 +16,6 @@ public class UIMethods {
         anim.setDuration(duration);
         anim.start();
     }
-
 
 
     public static void colorAnimator(final View view, final String color1, final String color2, final double duration) {

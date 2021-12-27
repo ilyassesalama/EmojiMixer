@@ -70,7 +70,7 @@ public class EmojiMixer implements Runnable {
         if (!shouldAbortTask) {
             String Combination = "/" + emoji1 + "/" + emoji1 + "_" + emoji2 + ".png";
             finalURL = API + date + Combination;
-            Log.d(LOG, "Checking url: " + finalURL);
+            Log.d(LOG, "Checking reversed url: " + finalURL);
             if (checkImage(finalURL)) {
                 isTaskSuccessful = true;
                 Log.d(LOG, "Found a combination at:  " + finalURL);
