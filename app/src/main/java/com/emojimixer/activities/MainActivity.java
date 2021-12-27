@@ -1,8 +1,9 @@
 package com.emojimixer.activities;
 
-import static com.emojimixer.functions.UIMethods.colorAnimator;
+import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 import static com.emojimixer.functions.UIMethods.shadAnim;
-import static com.emojimixer.functions.Utils.setImageFromUrl;
+import static com.emojimixer.functions.Utils.getRecyclerCurrentItem;
+import static com.emojimixer.functions.Utils.setSnapHelper;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,10 +11,6 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -29,19 +26,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.palette.graphics.Palette;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.CompositePageTransformer;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.recyclerview.widget.SnapHelper;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.emojimixer.R;
 import com.emojimixer.adapters.EmojisSliderAdapter;
+import com.emojimixer.functions.CenterZoomLayoutManager;
 import com.emojimixer.functions.EmojiMixer;
 import com.emojimixer.functions.RequestNetwork;
 import com.emojimixer.functions.RequestNetworkController;
+import com.emojimixer.functions.offsetItemDecoration;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.gson.Gson;
@@ -65,12 +71,17 @@ public class MainActivity extends AppCompatActivity {
     private String emote1;
     private String emote2;
     private String finalEmojiURL;
-    private ViewPager2 emojisSlider1;
-    private ViewPager2 emojisSlider2;
+    private RecyclerView emojisSlider1;
+    private RecyclerView emojisSlider2;
     private ArrayList<HashMap<String, Object>> supportedEmojisList = new ArrayList<>();
     private RequestNetwork requestSupportedEmojis;
     private RequestNetwork.RequestListener requestSupportedEmojisListener;
     private SharedPreferences sharedPref;
+    private boolean isFineToUseListeners = false;
+    private LinearLayoutManager emojisSlider1LayoutManager;
+    private LinearLayoutManager emojisSlider2LayoutManager;
+    private SnapHelper emojisSlider1SnapHelper = new LinearSnapHelper();
+    private SnapHelper emojisSlider2SnapHelper = new LinearSnapHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,15 +102,25 @@ public class MainActivity extends AppCompatActivity {
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         mixedEmoji.setOnClickListener(view -> {
+            isFineToUseListeners = false;
+            int random1 = 0;
+            int random2 = 0;
             for (int i = 0; i < 2; i++) {
                 Random rand = new Random();
-                int randomNum = rand.nextInt((supportedEmojisList.size()) + 1);
+
+                int randomNum = rand.nextInt((supportedEmojisList.size()) - 1);
                 if (i == 0) {
-                    emojisSlider1.setCurrentItem(randomNum);
+                    random1 = randomNum;
+                    emojisSlider1.smoothScrollToPosition(randomNum);
                 } else {
-                    emojisSlider2.setCurrentItem(randomNum);
+                    random2 = randomNum;
+                    emojisSlider2.smoothScrollToPosition(randomNum);
                 }
             }
+
+            emote1 = Objects.requireNonNull(supportedEmojisList.get(random1).get("emojiUnicode")).toString();
+            emote2 = Objects.requireNonNull(supportedEmojisList.get(random2).get("emojiUnicode")).toString();
+            mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(random1).get("date")).toString());
         });
 
         saveEmoji.setOnClickListener(view -> {
@@ -121,7 +142,8 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     sharedPref.edit().putString("supportedEmojisList", response).apply();
                     addDataToSliders(response);
-                } catch (Exception ignored) { }
+                } catch (Exception ignored) {
+                }
             }
 
             @Override
@@ -132,8 +154,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void LOGIC_BACKEND() {
-        viewpagerTransformation(emojisSlider1);
-        viewpagerTransformation(emojisSlider2);
+        emojisSlider1LayoutManager = new CenterZoomLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        emojisSlider2LayoutManager = new CenterZoomLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        setSnapHelper(emojisSlider1, emojisSlider1SnapHelper, emojisSlider1LayoutManager);
+        setSnapHelper(emojisSlider2, emojisSlider2SnapHelper, emojisSlider2LayoutManager);
+
+        emojisSlider1.setLayoutManager(emojisSlider1LayoutManager);
+        emojisSlider2.setLayoutManager(emojisSlider2LayoutManager);
+
+        emojisSlider1.addItemDecoration(new offsetItemDecoration(this));
+
         if (sharedPref.getString("supportedEmojisList", "").isEmpty()) {
             requestSupportedEmojis.startRequestNetwork(RequestNetworkController.GET, "https://ilyassesalama.github.io/EmojiMixer/emojis/supported_emojis.json", "", requestSupportedEmojisListener);
         } else {
@@ -141,76 +171,59 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void viewpagerTransformation(ViewPager2 viewpager) {
-        viewpager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-
-        viewpager.setOffscreenPageLimit(1);
-        int pageMarginPx = getResources().getDimensionPixelOffset(R.dimen.margin_card);
-        int peekMarginPx = getResources().getDimensionPixelOffset(R.dimen.peek_offset_card);
-
-        RecyclerView rv = (RecyclerView) viewpager.getChildAt(0);
-        rv.setClipToPadding(false);
-        int padding = peekMarginPx + pageMarginPx;
-        rv.setPadding(padding, 0, padding, 0);
-
-        CompositePageTransformer transformer = new CompositePageTransformer();
-        transformer.addTransformer((page, position) -> {
-            float a = 1 - Math.abs(position);
-            page.setScaleY(0.85f + a * 0.15f);
-            page.setScaleX(0.85f + a * 0.15f);
-        });
-        viewpager.setPageTransformer(transformer);
-    }
 
     private void addDataToSliders(String data) {
+        isFineToUseListeners = false;
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
             supportedEmojisList = new Gson().fromJson(data, new TypeToken<ArrayList<HashMap<String, Object>>>() {
             }.getType());
             handler.post(() -> {
-                emojisSlider1.setAdapter(new EmojisSliderAdapter(supportedEmojisList, MainActivity.this));
-                emojisSlider2.setAdapter(new EmojisSliderAdapter(supportedEmojisList, MainActivity.this));
+                emojisSlider1.setAdapter(new EmojisSliderAdapter(supportedEmojisList, emojisSlider1LayoutManager, MainActivity.this));
+                emojisSlider2.setAdapter(new EmojisSliderAdapter(supportedEmojisList, emojisSlider2LayoutManager, MainActivity.this));
                 new Handler().postDelayed(() -> {
                     for (int i = 0; i < 2; i++) {
                         Random rand = new Random();
-                        int randomNum = rand.nextInt((supportedEmojisList.size()) + 1);
+                        int randomNum = rand.nextInt((supportedEmojisList.size()) - 1);
                         if (i == 0) {
-                            emojisSlider1.setCurrentItem(randomNum);
+                            emojisSlider1.smoothScrollToPosition(randomNum);
                         } else {
-                            emojisSlider2.setCurrentItem(randomNum);
+                            emojisSlider2.smoothScrollToPosition(randomNum);
                         }
                     }
 
                     shouldShowEmoji(false);
-                    emote1 = Objects.requireNonNull(supportedEmojisList.get(emojisSlider1.getCurrentItem()).get("emojiUnicode")).toString();
-                    emote2 = Objects.requireNonNull(supportedEmojisList.get(emojisSlider2.getCurrentItem()).get("emojiUnicode")).toString();
-                    mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(emojisSlider2.getCurrentItem()).get("date")).toString());
+                    emote1 = Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider1, emojisSlider1SnapHelper, emojisSlider1LayoutManager)).get("emojiUnicode")).toString();
+                    emote2 = Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider2, emojisSlider2SnapHelper, emojisSlider2LayoutManager)).get("emojiUnicode")).toString();
+                    mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider1, emojisSlider1SnapHelper, emojisSlider1LayoutManager)).get("date")).toString());
                     registerViewPagersListener();
+                    isFineToUseListeners = true;
                 }, 1000);
-
             });
         });
     }
 
     private void registerViewPagersListener() {
-        emojisSlider1.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        emojisSlider1.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onPageSelected(int position) {
-                new Handler().postDelayed(() -> {
-
-                }, 100);
-                emote1 = Objects.requireNonNull(supportedEmojisList.get(position).get("emojiUnicode")).toString();
-                shouldShowEmoji(false);
-                mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(position).get("date")).toString());
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (isFineToUseListeners && newState == SCROLL_STATE_IDLE) {
+                    emote1 = Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider1, emojisSlider1SnapHelper, emojisSlider1LayoutManager)).get("emojiUnicode")).toString();
+                    shouldShowEmoji(false);
+                    mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider1, emojisSlider1SnapHelper, emojisSlider1LayoutManager)).get("date")).toString());
+                }
             }
         });
-        emojisSlider2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+
+        emojisSlider2.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onPageSelected(int position) {
-                emote2 = Objects.requireNonNull(supportedEmojisList.get(position).get("emojiUnicode")).toString();
-                shouldShowEmoji(false);
-                mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(position).get("date")).toString());
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (isFineToUseListeners && newState == SCROLL_STATE_IDLE) {
+                    emote2 = Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider2, emojisSlider2SnapHelper, emojisSlider2LayoutManager)).get("emojiUnicode")).toString();
+                    shouldShowEmoji(false);
+                    mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider2, emojisSlider2SnapHelper, emojisSlider2LayoutManager)).get("date")).toString());
+                }
             }
         });
     }
@@ -224,10 +237,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String emojiUrl) {
                 finalEmojiURL = emojiUrl;
-                shouldShowEmoji(true);
-                progressBar.setVisibility(View.GONE);
                 shouldEnableSave(true);
-                setImageFromUrl(mixedEmoji, emojiUrl, MainActivity.this);
+                setImageFromUrl(mixedEmoji, emojiUrl);
             }
 
             @Override
@@ -236,7 +247,6 @@ public class MainActivity extends AppCompatActivity {
                 shouldEnableSave(false);
                 mixedEmoji.setImageResource(R.drawable.sad);
                 shouldShowEmoji(true);
-                progressBar.setVisibility(View.GONE);
             }
         });
         Thread thread = new Thread(em);
@@ -245,12 +255,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void shouldShowEmoji(boolean shouldShow) {
+        isFineToUseListeners = true;
         if (shouldShow) {
             shadAnim(mixedEmoji, "scaleY", 1, 300);
             shadAnim(mixedEmoji, "scaleX", 1, 300);
+            shadAnim(progressBar, "scaleY", 0, 300);
+            shadAnim(progressBar, "scaleX", 0, 300);
         } else {
             shadAnim(mixedEmoji, "scaleY", 0, 300);
             shadAnim(mixedEmoji, "scaleX", 0, 300);
+            shadAnim(progressBar, "scaleY", 1, 300);
+            shadAnim(progressBar, "scaleX", 1, 300);
         }
     }
 
@@ -258,19 +273,42 @@ public class MainActivity extends AppCompatActivity {
 
         if (shouldShow) {
             new Handler().postDelayed(() -> {
-                saveEmoji.setBackgroundColor(getDominantColor(mixedEmoji));
                 saveEmoji.setEnabled(true);
-                saveEmoji.setTextColor(Color.parseColor("#422B0D"));
-                saveEmoji.setIconTint(ColorStateList.valueOf(Color.parseColor("#422B0D")));
+                //colorAnimator(saveEmoji, "#2A2B28", "#FF9D05", 250);
+                //saveEmoji.setTextColor(Color.parseColor("#422B0D"));
+                //saveEmoji.setIconTint(ColorStateList.valueOf(Color.parseColor("#422B0D")));
             }, 1000);
         } else {
-            colorAnimator(saveEmoji, "#FF9D05", "#2A2B28", 250);
             saveEmoji.setEnabled(false);
-            saveEmoji.setTextColor(Color.parseColor("#A3A3A3"));
-            saveEmoji.setIconTint(ColorStateList.valueOf(Color.parseColor("#A3A3A3")));
+            //colorAnimator(saveEmoji, "#FF9D05", "#2A2B28", 250);
+            //saveEmoji.setTextColor(Color.parseColor("#A3A3A3"));
+            //saveEmoji.setIconTint(ColorStateList.valueOf(Color.parseColor("#A3A3A3")));
         }
-
     }
+
+    private void setImageFromUrl(ImageView image, String url) {
+        Glide.with(this)
+                .load(url)
+                .fitCenter()
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .listener(
+                        new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                shouldShowEmoji(true);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                shouldShowEmoji(true);
+                                return false;
+                            }
+                        }
+                )
+                .into(image);
+    }
+
 
     private void changeActivityDesc(String text) {
         shadAnim(activityDesc, "alpha", 0, 300);
@@ -314,16 +352,5 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public int getDominantColor(ImageView image) {
-        Drawable drawable = image.getDrawable();
-        BitmapDrawable bitDraw = (BitmapDrawable) drawable;
-        if (bitDraw != null) {
-            Bitmap bitmap = bitDraw.getBitmap();
-            Palette palette = Palette.generate(bitmap);
-            return palette.getVibrantColor(0x000000);
-        } else {
-            return Color.parseColor("#FF9D05");
-        }
-    }
 
 }
