@@ -94,7 +94,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -103,10 +103,12 @@
                         android:fadingEdgeLength="30dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
+
+                    <include layout="@layout/stickers_add_bottom_fragment" />
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-        <include layout="@layout/stickers_add_bottom_fragment" />
     </ScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
