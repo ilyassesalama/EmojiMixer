@@ -8,109 +8,107 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/activityTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="#000"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/activityDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="60dp"
+            android:gravity="center"
+            android:text="@string/swipe_left_or_right_to_mix_emojis"
+            android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/activityTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/app_name"
-                android:textColor="#000"
-                android:textSize="23sp"
-                android:textStyle="bold" />
+            <RelativeLayout
+                android:layout_width="200dp"
+                android:layout_height="200dp">
 
-            <TextView
-                android:id="@+id/activityDesc"
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progressBar"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerInParent="true"
+                    android:indeterminate="true"
+                    app:indicatorColor="#F7C02B"
+                    app:indicatorSize="60dp"
+                    app:trackCornerRadius="10dp"
+                    app:trackThickness="5dp" />
+
+                <ImageView
+                    android:id="@+id/mixedEmoji"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/shocked" />
+            </RelativeLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:gravity="center"
-                android:text="@string/swipe_left_or_right_to_mix_emojis"
-                android:textSize="14sp" />
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
+                    android:layout_height="100dp"
                     android:orientation="vertical">
 
-                    <RelativeLayout
-                        android:layout_width="200dp"
-                        android:layout_height="200dp">
-
-                        <com.google.android.material.progressindicator.CircularProgressIndicator
-                            android:id="@+id/progressBar"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_centerInParent="true"
-                            android:indeterminate="true"
-                            app:indicatorColor="#F7C02B"
-                            app:indicatorSize="60dp"
-                            app:trackCornerRadius="10dp"
-                            app:trackThickness="5dp" />
-
-                        <ImageView
-                            android:id="@+id/mixedEmoji"
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
-                            android:layout_centerInParent="true"
-                            android:src="@drawable/shocked" />
-                    </RelativeLayout>
-
-                    <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/emojisSlider1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:orientation="vertical">
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/emojisSlider1"
-                                android:layout_width="match_parent"
-                                android:fadingEdge="horizontal"
-                                android:fadingEdgeLength="30dp"
-                                android:layout_height="match_parent" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="+"
-                            android:layout_marginBottom="10dp"
-                            android:textSize="40sp"
-                            android:textStyle="bold"/>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:orientation="vertical">
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/emojisSlider2"
-                                android:fadingEdge="horizontal"
-                                android:fadingEdgeLength="30dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <include layout="@layout/stickers_add_bottom_fragment" />
+                        android:fadingEdge="horizontal"
+                        android:fadingEdgeLength="30dp"
+                        android:layout_height="match_parent" />
                 </LinearLayout>
-        </LinearLayout>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="+"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/emojisSlider2"
+                        android:fadingEdge="horizontal"
+                        android:fadingEdgeLength="30dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <include layout="@layout/stickers_add_bottom_fragment" />
+
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
