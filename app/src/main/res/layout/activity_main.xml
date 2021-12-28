@@ -104,11 +104,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </LinearLayout>
-
-                <include layout="@layout/stickers_add_bottom_fragment" />
-
             </LinearLayout>
         </LinearLayout>
+        <include layout="@layout/stickers_add_bottom_fragment" />
     </ScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
