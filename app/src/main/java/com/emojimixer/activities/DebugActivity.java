@@ -59,10 +59,11 @@ public class DebugActivity extends AppCompatActivity {
             }
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this)
                .setTitle("An error occurred")
                .setMessage(madeErrorMessage)
                .setPositiveButton("End Application", (dialog, which) -> finish())
-               .create().show();
+               .create()
+               .show();
     }
 }
