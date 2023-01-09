@@ -1,15 +1,10 @@
 package com.emojimixer.functions;
 
-import android.app.Activity;
 import android.view.View;
-import android.widget.ImageView;
 
 import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
-
-import com.bumptech.glide.Glide;
 
 public class Utils {
 
@@ -27,7 +22,8 @@ public class Utils {
         return sb.toString();
     }
     public static void setSnapHelper(RecyclerView recyclerView, SnapHelper snapHelper, RecyclerView.LayoutManager layoutManager) {
-        snapHelper = new LinearSnapHelper();
+//        why it should be re-assigned while it was passed as parameter?
+//        snapHelper = new LinearSnapHelper();
         recyclerView.setLayoutManager(layoutManager);
         snapHelper.attachToRecyclerView(recyclerView);
     }
