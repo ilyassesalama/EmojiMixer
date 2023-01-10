@@ -1,14 +1,14 @@
 # EmojiMixer
  An app that mixes emojis using Google Emoji Kitchen API mainly inspired from [emojimix](https://tikolu.net/emojimix/).
  
- The project is just broken since I'm not active anymore to fix it, I appreciate every contribution especially the ones that help to make the app more consistent. Also, there's a to-do list at the bottom with details on what to add/fix if you're interested.
+ The project is just inactive since I'm not active anymore to maintain it, I appreciate every contribution especially the ones that help to make the app more consistent. Also, there's a to-do list at the bottom with details on what to add/fix if you're interested.
 
 ## Preview
 <img src="/Screenshots/emojismixer_preview.gif" width="300" height="600">
 
 ## To-do
 ### Emojis sliders:
-- First and last RecyclerView items are not centered which makes them inaccessible to mix.
+
 - When scrolling both RecyclerViews fast sometimes shown mixed emojis is wrong.
 - Progress bar is hiding for some emojis even when they're not loaded.
 - Tapping an emoji should smooth scroll to it instead of making it unclickable.
