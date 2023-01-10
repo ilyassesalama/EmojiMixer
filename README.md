@@ -16,7 +16,7 @@
  
 ### Better URL checking system:
 - We already have emojis release date, so it has to be used to fetch emojis instead of using reverse method to load the emoji as a workaround.
-- New emojis have to be added since they were released but not implemented yet. (use emojimix repository and website as a refrence).
+- New emojis have to be added since they were released but not implemented yet. (use emojimix repository and website as a reference).
 
 ### Export mixed emojis as stickers:
 - UI for this feature.
