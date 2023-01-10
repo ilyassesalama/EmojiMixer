@@ -21,7 +21,7 @@ class EmojisSliderAdapter(
     private val data: ArrayList<HashMap<String, Any>>,
     private val mContext: Context
 ) : RecyclerView.Adapter<EmojisSliderAdapter.ViewHolder>() {
-    private val original = data.clone() as ArrayList<HashMap<String, Any>>
+    val original = data.clone() as ArrayList<HashMap<String, Any>>
     init {
         mContext.getSharedPreferences("AppData", Activity.MODE_PRIVATE)
     }
@@ -51,7 +51,7 @@ class EmojisSliderAdapter(
 
     fun addItems(position: Int) {
         data.addAll(position, original)
-        notifyItemRangeChanged(position, original.size)
+        notifyItemRangeInserted(position, original.size)
     }
 
     private fun loadEmojiFromUrl(

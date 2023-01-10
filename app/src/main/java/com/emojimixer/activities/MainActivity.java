@@ -243,12 +243,12 @@ public class MainActivity extends AppCompatActivity {
 
                 int visibleItemCount = emojisSlider1LayoutManager.getChildCount();
                 int totalItemCount = emojisSlider1LayoutManager.getItemCount();
-                int firstVisibleItemPosition = emojisSlider1LayoutManager.findFirstVisibleItemPosition();
-
-                if (firstVisibleItemPosition <= 0) {
-                    ((EmojisSliderAdapter) Objects.requireNonNull(recyclerView.getAdapter())).addItems(0);
+                int firstVisibleItemPosition = emojisSlider1LayoutManager.findFirstCompletelyVisibleItemPosition();
+                EmojisSliderAdapter adapter = (EmojisSliderAdapter) Objects.requireNonNull(recyclerView.getAdapter());
+                if (firstVisibleItemPosition == 0) {
+                    adapter.addItems(0);
                 } else if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
-                    ((EmojisSliderAdapter) Objects.requireNonNull(recyclerView.getAdapter())).addItems(recyclerView.getAdapter().getItemCount());
+                    adapter.addItems(adapter.getItemCount());
                 }
             }
         });
@@ -269,12 +269,12 @@ public class MainActivity extends AppCompatActivity {
 
                 int visibleItemCount = emojisSlider1LayoutManager.getChildCount();
                 int totalItemCount = emojisSlider1LayoutManager.getItemCount();
-                int firstVisibleItemPosition = emojisSlider1LayoutManager.findFirstVisibleItemPosition();
-
-                if (firstVisibleItemPosition <= 0) {
-                    ((EmojisSliderAdapter) Objects.requireNonNull(recyclerView.getAdapter())).addItems(0);
+                int firstVisibleItemPosition = emojisSlider1LayoutManager.findFirstCompletelyVisibleItemPosition();
+                EmojisSliderAdapter adapter = (EmojisSliderAdapter) Objects.requireNonNull(recyclerView.getAdapter());
+                if (firstVisibleItemPosition == 0) {
+                    adapter.addItems(0);
                 } else if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
-                    ((EmojisSliderAdapter) Objects.requireNonNull(recyclerView.getAdapter())).addItems(recyclerView.getAdapter().getItemCount());
+                    adapter.addItems(adapter.getItemCount());
                 }
             }
         });
