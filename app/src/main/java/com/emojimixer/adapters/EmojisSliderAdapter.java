@@ -66,7 +66,6 @@ public class EmojisSliderAdapter extends RecyclerView.Adapter<EmojisSliderAdapte
 
         RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(_lp);
-
     }
 
     @Override
@@ -78,6 +77,7 @@ public class EmojisSliderAdapter extends RecyclerView.Adapter<EmojisSliderAdapte
         Glide.with(mContext)
                 .load(url)
                 .fitCenter()
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .listener(
                         new RequestListener<Drawable>() {
                             @Override
