@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +78,6 @@ public class EmojisSliderAdapter extends RecyclerView.Adapter<EmojisSliderAdapte
         Glide.with(mContext)
                 .load(url)
                 .fitCenter()
-                .transition(DrawableTransitionOptions.withCrossFade())
                 .listener(
                         new RequestListener<Drawable>() {
                             @Override

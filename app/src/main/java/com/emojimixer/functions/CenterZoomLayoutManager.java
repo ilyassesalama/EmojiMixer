@@ -21,7 +21,6 @@ public class CenterZoomLayoutManager extends LinearLayoutManager {
 
 
     @Override
-
     public int scrollHorizontallyBy(int dx, RecyclerView.Recycler recycler, RecyclerView.State state) {
         int orientation = getOrientation();
         if (orientation == HORIZONTAL) {

@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
+    android:weightSum="3"
     android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
+        android:layout_weight="3"
         android:layout_height="match_parent">
-
         <LinearLayout
+            android:layout_weight="3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/activityTitle"
                 android:layout_width="match_parent"
@@ -81,17 +84,17 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/emojisSlider1"
                             android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:fadingEdge="horizontal"
-                            android:fadingEdgeLength="30dp"
-                            android:layout_height="match_parent" />
+                            android:fadingEdgeLength="30dp" />
                     </LinearLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
                         android:gravity="center"
                         android:text="+"
-                        android:layout_marginBottom="10dp"
                         android:textSize="40sp"
                         android:textStyle="bold" />
 
@@ -102,16 +105,51 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/emojisSlider2"
-                            android:fadingEdge="horizontal"
-                            android:fadingEdgeLength="30dp"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-
-                        <include layout="@layout/stickers_add_bottom_fragment" />
+                            android:layout_height="match_parent"
+                            android:fadingEdge="horizontal"
+                            android:fadingEdgeLength="30dp" />
 
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_height="wrap_content">
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/saveEmoji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="25dp"
+            android:text="@string/save_emoji"
+            android:textAllCaps="false"
+            android:textColor="#422B0D"
+            android:textSize="14sp"
+            app:backgroundTint="#F7C02B"
+            app:icon="@drawable/ic_outline_save_alt_24"
+            app:iconTint="#422B0D" />
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/export"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="25dp"
+            android:text="Stickers"
+            android:textAllCaps="false"
+            android:textColor="#422B0D"
+            android:textSize="14sp"
+            app:backgroundTint="#F7C02B"
+            app:icon="@drawable/ic_outline_file_upload_24"
+            app:iconTint="#422B0D" />
+    </LinearLayout>
+</LinearLayout>

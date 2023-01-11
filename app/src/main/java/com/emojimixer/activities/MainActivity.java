@@ -23,6 +23,7 @@ import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.URLUtil;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +48,9 @@ import com.emojimixer.functions.CenterZoomLayoutManager;
 import com.emojimixer.functions.EmojiMixer;
 import com.emojimixer.functions.RequestNetwork;
 import com.emojimixer.functions.RequestNetworkController;
+import com.emojimixer.functions.Utils;
 import com.emojimixer.functions.offsetItemDecoration;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.gson.Gson;
@@ -65,6 +68,7 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton saveEmoji;
+    private ExtendedFloatingActionButton exportEmoji;
     private ImageView mixedEmoji;
     private CircularProgressIndicator progressBar;
     private TextView activityDesc;
@@ -96,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         activityDesc = findViewById(R.id.activityDesc);
         mixedEmoji = findViewById(R.id.mixedEmoji);
         saveEmoji = findViewById(R.id.saveEmoji);
+        exportEmoji = findViewById(R.id.export);
         emojisSlider1 = findViewById(R.id.emojisSlider1);
         emojisSlider2 = findViewById(R.id.emojisSlider2);
         requestSupportedEmojis = new RequestNetwork(this);
@@ -125,15 +130,32 @@ public class MainActivity extends AppCompatActivity {
 
         saveEmoji.setOnClickListener(view -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                downloadFile(finalEmojiURL);
+                Utils.saveImage(mixedEmoji, MainActivity.this, "\uD83D\uDE22", false);
             } else {
                 if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    downloadFile(finalEmojiURL);
+                    Utils.saveImage(mixedEmoji, MainActivity.this, "\uD83D\uDE22", false);
                 } else {
                     ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 }
             }
 
+        });
+
+        exportEmoji.setOnClickListener(v ->{
+            BottomSheetDialog sheetDialog = new BottomSheetDialog(this);
+            View view = getLayoutInflater().inflate(R.layout.layout, null);
+            LinearLayout whatsapp = view.findViewById(R.id.whatsapp);
+            LinearLayout telegram = view.findViewById(R.id.telegram);
+            sheetDialog.setContentView(view);
+            sheetDialog.show();
+            telegram.setOnClickListener(vw -> {
+                Utils.saveImage(mixedEmoji, MainActivity.this, "\uD83D\uDE22", true);
+                sheetDialog.dismiss();
+            });
+            whatsapp.setOnClickListener(vw -> {
+                sheetDialog.dismiss();
+                Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
+            });
         });
 
         requestSupportedEmojisListener = new RequestNetwork.RequestListener() {
