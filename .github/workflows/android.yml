@@ -1,27 +1,19 @@
-name: Build & Publish Debug APK
-
-on:
- push:
-  branches:
-   - main
-   
+name: Build APK
+on: [pull_request, push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: set up JDK 1.8
-      uses: actions/setup-java@v1
-      with:
-        java-version: 1.8
-    - name: Make Gradle executable
-      run: chmod +x ./gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
-    - name: Build Debug APK
-      run: ./gradlew assembleDebug
-    - name: Releasing using Hub
-      uses: ShaunLWM/action-release-debugapk@master
-      env:
-       APP_FOLDER: app
-       RELEASE_TITLE: New Build
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build the app
+        run: ./gradlew assembleDebug
+
+      - name: Upload debug apk
+        uses: actions/upload-artifact@v3
+        if: ${{ !github.head_ref }}
+        with:
+          name: apk-debug
+          path: app/build/outputs/apk/debug
