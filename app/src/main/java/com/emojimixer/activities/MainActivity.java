@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isFineToUseListeners = false;
     private LinearLayoutManager emojisSlider1LayoutManager;
     private LinearLayoutManager emojisSlider2LayoutManager;
-    private SnapHelper emojisSlider1SnapHelper = new LinearSnapHelper();
-    private SnapHelper emojisSlider2SnapHelper = new LinearSnapHelper();
+    private final SnapHelper emojisSlider1SnapHelper = new LinearSnapHelper();
+    private final SnapHelper emojisSlider2SnapHelper = new LinearSnapHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,8 +202,8 @@ public class MainActivity extends AppCompatActivity {
             supportedEmojisList = new Gson().fromJson(data, new TypeToken<ArrayList<HashMap<String, Object>>>() {
             }.getType());
             handler.post(() -> {
-                emojisSlider1.setAdapter(new EmojisSliderAdapter(supportedEmojisList, emojisSlider1LayoutManager, MainActivity.this));
-                emojisSlider2.setAdapter(new EmojisSliderAdapter(supportedEmojisList, emojisSlider2LayoutManager, MainActivity.this));
+                emojisSlider1.setAdapter(new EmojisSliderAdapter(supportedEmojisList, MainActivity.this));
+                emojisSlider2.setAdapter(new EmojisSliderAdapter(supportedEmojisList, MainActivity.this));
                 new Handler().postDelayed(() -> {
                     for (int i = 0; i < 2; i++) {
                         Random rand = new Random();
@@ -236,6 +236,21 @@ public class MainActivity extends AppCompatActivity {
                     mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider1, emojisSlider1SnapHelper, emojisSlider1LayoutManager)).get("date")).toString());
                 }
             }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int visibleItemCount = emojisSlider1LayoutManager.getChildCount();
+                int totalItemCount = emojisSlider1LayoutManager.getItemCount();
+                int firstVisibleItemPosition = emojisSlider1LayoutManager.findFirstCompletelyVisibleItemPosition();
+                EmojisSliderAdapter adapter = (EmojisSliderAdapter) Objects.requireNonNull(recyclerView.getAdapter());
+                if (firstVisibleItemPosition == 0) {
+                    adapter.addItems(0);
+                } else if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
+                    adapter.addItems(adapter.getItemCount());
+                }
+            }
         });
 
         emojisSlider2.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -245,6 +260,21 @@ public class MainActivity extends AppCompatActivity {
                     emote2 = Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider2, emojisSlider2SnapHelper, emojisSlider2LayoutManager)).get("emojiUnicode")).toString();
                     shouldShowEmoji(false);
                     mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider2, emojisSlider2SnapHelper, emojisSlider2LayoutManager)).get("date")).toString());
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int visibleItemCount = emojisSlider1LayoutManager.getChildCount();
+                int totalItemCount = emojisSlider1LayoutManager.getItemCount();
+                int firstVisibleItemPosition = emojisSlider1LayoutManager.findFirstCompletelyVisibleItemPosition();
+                EmojisSliderAdapter adapter = (EmojisSliderAdapter) Objects.requireNonNull(recyclerView.getAdapter());
+                if (firstVisibleItemPosition == 0) {
+                    adapter.addItems(0);
+                } else if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
+                    adapter.addItems(adapter.getItemCount());
                 }
             }
         });
