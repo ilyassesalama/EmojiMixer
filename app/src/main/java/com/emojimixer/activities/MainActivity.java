@@ -143,16 +143,16 @@ public class MainActivity extends AppCompatActivity {
 
         exportEmoji.setOnClickListener(v ->{
             BottomSheetDialog sheetDialog = new BottomSheetDialog(this);
-            View view = getLayoutInflater().inflate(R.layout.layout, null);
-            LinearLayout whatsapp = view.findViewById(R.id.whatsapp);
-            LinearLayout telegram = view.findViewById(R.id.telegram);
+            View view = getLayoutInflater().inflate(R.layout.sticker_bottom_sheet, null);
+            LinearLayout whatsappButton = view.findViewById(R.id.whatsappButton);
+            LinearLayout telegramButton = view.findViewById(R.id.telegramButton);
             sheetDialog.setContentView(view);
             sheetDialog.show();
-            telegram.setOnClickListener(vw -> {
+            telegramButton.setOnClickListener(vw -> {
                 Utils.saveImage(mixedEmoji, MainActivity.this, "\uD83D\uDE22", true);
                 sheetDialog.dismiss();
             });
-            whatsapp.setOnClickListener(vw -> {
+            whatsappButton.setOnClickListener(vw -> {
                 sheetDialog.dismiss();
                 Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
             });
@@ -184,7 +184,11 @@ public class MainActivity extends AppCompatActivity {
         emojisSlider1.setLayoutManager(emojisSlider1LayoutManager);
         emojisSlider2.setLayoutManager(emojisSlider2LayoutManager);
 
+        emojisSlider1.setClipToPadding(false);
+        emojisSlider2.setClipToPadding(false);
+
         emojisSlider1.addItemDecoration(new offsetItemDecoration(this));
+        emojisSlider2.addItemDecoration(new offsetItemDecoration(this));
 
         if (sharedPref.getString("supportedEmojisList", "").isEmpty()) {
             requestSupportedEmojis.startRequestNetwork(RequestNetworkController.GET, "https://ilyassesalama.github.io/EmojiMixer/emojis/supported_emojis.json", "", requestSupportedEmojisListener);
@@ -236,21 +240,6 @@ public class MainActivity extends AppCompatActivity {
                     mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider1, emojisSlider1SnapHelper, emojisSlider1LayoutManager)).get("date")).toString());
                 }
             }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                int visibleItemCount = emojisSlider1LayoutManager.getChildCount();
-                int totalItemCount = emojisSlider1LayoutManager.getItemCount();
-                int firstVisibleItemPosition = emojisSlider1LayoutManager.findFirstCompletelyVisibleItemPosition();
-                EmojisSliderAdapter adapter = (EmojisSliderAdapter) Objects.requireNonNull(recyclerView.getAdapter());
-                if (firstVisibleItemPosition == 0) {
-                    adapter.addItems(0);
-                } else if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
-                    adapter.addItems(adapter.getItemCount());
-                }
-            }
         });
 
         emojisSlider2.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -260,21 +249,6 @@ public class MainActivity extends AppCompatActivity {
                     emote2 = Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider2, emojisSlider2SnapHelper, emojisSlider2LayoutManager)).get("emojiUnicode")).toString();
                     shouldShowEmoji(false);
                     mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider2, emojisSlider2SnapHelper, emojisSlider2LayoutManager)).get("date")).toString());
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                int visibleItemCount = emojisSlider1LayoutManager.getChildCount();
-                int totalItemCount = emojisSlider1LayoutManager.getItemCount();
-                int firstVisibleItemPosition = emojisSlider1LayoutManager.findFirstCompletelyVisibleItemPosition();
-                EmojisSliderAdapter adapter = (EmojisSliderAdapter) Objects.requireNonNull(recyclerView.getAdapter());
-                if (firstVisibleItemPosition == 0) {
-                    adapter.addItems(0);
-                } else if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
-                    adapter.addItems(adapter.getItemCount());
                 }
             }
         });
