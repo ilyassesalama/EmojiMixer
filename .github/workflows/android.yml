@@ -12,7 +12,7 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Upload debug apk
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         if: ${{ !github.head_ref }}
         with:
           name: apk-debug
