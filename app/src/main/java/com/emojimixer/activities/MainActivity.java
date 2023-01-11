@@ -184,7 +184,11 @@ public class MainActivity extends AppCompatActivity {
         emojisSlider1.setLayoutManager(emojisSlider1LayoutManager);
         emojisSlider2.setLayoutManager(emojisSlider2LayoutManager);
 
+        emojisSlider1.setClipToPadding(false);
+        emojisSlider2.setClipToPadding(false);
+
         emojisSlider1.addItemDecoration(new offsetItemDecoration(this));
+        emojisSlider2.addItemDecoration(new offsetItemDecoration(this));
 
         if (sharedPref.getString("supportedEmojisList", "").isEmpty()) {
             requestSupportedEmojis.startRequestNetwork(RequestNetworkController.GET, "https://ilyassesalama.github.io/EmojiMixer/emojis/supported_emojis.json", "", requestSupportedEmojisListener);

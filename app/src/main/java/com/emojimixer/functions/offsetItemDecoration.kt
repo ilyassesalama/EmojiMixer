@@ -19,7 +19,7 @@ class offsetItemDecoration(private val ctx: Context) : ItemDecoration() {
     ) {
         super.getItemOffsets(outRect, view, parent, state)
         val offset =
-            (getScreenWidth(ctx as Activity) / 2.toFloat()).toInt() - view.layoutParams.width / 2
+            (getScreenWidth(ctx as Activity) / 2.toFloat()).toInt() - view.width / 2
         if (parent.getChildAdapterPosition(view) == 0) {
             (view.layoutParams as MarginLayoutParams).leftMargin = 0
             setupOutRect(outRect, offset, true)
