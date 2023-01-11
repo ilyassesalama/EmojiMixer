@@ -266,21 +266,6 @@ public class MainActivity extends AppCompatActivity {
                     mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider2, emojisSlider2SnapHelper, emojisSlider2LayoutManager)).get("date")).toString());
                 }
             }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                int visibleItemCount = emojisSlider1LayoutManager.getChildCount();
-                int totalItemCount = emojisSlider1LayoutManager.getItemCount();
-                int firstVisibleItemPosition = emojisSlider1LayoutManager.findFirstCompletelyVisibleItemPosition();
-                EmojisSliderAdapter adapter = (EmojisSliderAdapter) Objects.requireNonNull(recyclerView.getAdapter());
-                if (firstVisibleItemPosition == 0) {
-                    adapter.addItems(0);
-                } else if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
-                    adapter.addItems(adapter.getItemCount());
-                }
-            }
         });
     }
 
