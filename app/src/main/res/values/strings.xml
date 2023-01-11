@@ -4,4 +4,7 @@
     <string name="downloading">Downloading your cool mixed emoji&#8230;</string>
     <string name="swipe_left_or_right_to_mix_emojis">Swipe left or right to mix emojis</string>
     <string name="save_emoji">Save emoji</string>
+    <string name="exporting">Exporting</string>
+    <string name="saved">Successfully Saved</string>
+    <string name="failed_to_save">Failed to Save</string>
 </resources>
