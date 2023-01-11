@@ -143,16 +143,16 @@ public class MainActivity extends AppCompatActivity {
 
         exportEmoji.setOnClickListener(v ->{
             BottomSheetDialog sheetDialog = new BottomSheetDialog(this);
-            View view = getLayoutInflater().inflate(R.layout.layout, null);
-            LinearLayout whatsapp = view.findViewById(R.id.whatsapp);
-            LinearLayout telegram = view.findViewById(R.id.telegram);
+            View view = getLayoutInflater().inflate(R.layout.sticker_bottom_sheet, null);
+            LinearLayout whatsappButton = view.findViewById(R.id.whatsappButton);
+            LinearLayout telegramButton = view.findViewById(R.id.telegramButton);
             sheetDialog.setContentView(view);
             sheetDialog.show();
-            telegram.setOnClickListener(vw -> {
+            telegramButton.setOnClickListener(vw -> {
                 Utils.saveImage(mixedEmoji, MainActivity.this, "\uD83D\uDE22", true);
                 sheetDialog.dismiss();
             });
-            whatsapp.setOnClickListener(vw -> {
+            whatsappButton.setOnClickListener(vw -> {
                 sheetDialog.dismiss();
                 Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
             });

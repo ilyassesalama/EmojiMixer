@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.TransitionOptions
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -62,6 +63,7 @@ class EmojisSliderAdapter(
         Glide.with(mContext)
             .load(url)
             .fitCenter()
+            .transition(DrawableTransitionOptions.withCrossFade())
             .listener(
                 object : RequestListener<Drawable?> {
                     override fun onLoadFailed(
