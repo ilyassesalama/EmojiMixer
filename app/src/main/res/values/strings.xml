@@ -7,4 +7,10 @@
     <string name="exporting">Exporting</string>
     <string name="saved">Successfully Saved</string>
     <string name="failed_to_save">Failed to Save</string>
+    <string name="whatsapp_icon">Whatsapp icon</string>
+    <string name="export_to_whatsapp">Export to WhatsApp</string>
+    <string name="telegram_icon">Telegram icon</string>
+    <string name="export_to_telegram">Export to Telegram</string>
+    <string name="export_as_sticker">Export As Sticker</string>
+    <string name="stickers">Stickers</string>
 </resources>

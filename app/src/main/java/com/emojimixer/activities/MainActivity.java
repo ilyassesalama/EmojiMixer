@@ -6,22 +6,16 @@ import static com.emojimixer.functions.Utils.getRecyclerCurrentItem;
 import static com.emojimixer.functions.Utils.setSnapHelper;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DownloadManager;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,11 +50,8 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -68,13 +59,11 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton saveEmoji;
-    private ExtendedFloatingActionButton exportEmoji;
     private ImageView mixedEmoji;
     private CircularProgressIndicator progressBar;
     private TextView activityDesc;
     private String emote1;
     private String emote2;
-    private String finalEmojiURL;
     private RecyclerView emojisSlider1;
     private RecyclerView emojisSlider2;
     private ArrayList<HashMap<String, Object>> supportedEmojisList = new ArrayList<>();
@@ -100,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         activityDesc = findViewById(R.id.activityDesc);
         mixedEmoji = findViewById(R.id.mixedEmoji);
         saveEmoji = findViewById(R.id.saveEmoji);
-        exportEmoji = findViewById(R.id.export);
+        ExtendedFloatingActionButton exportEmoji = findViewById(R.id.export);
         emojisSlider1 = findViewById(R.id.emojisSlider1);
         emojisSlider2 = findViewById(R.id.emojisSlider2);
         requestSupportedEmojis = new RequestNetwork(this);
@@ -143,14 +132,18 @@ public class MainActivity extends AppCompatActivity {
 
         exportEmoji.setOnClickListener(v ->{
             BottomSheetDialog sheetDialog = new BottomSheetDialog(this);
-            View view = getLayoutInflater().inflate(R.layout.sticker_bottom_sheet, null);
+            @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.sticker_bottom_sheet, null);
             LinearLayout whatsappButton = view.findViewById(R.id.whatsappButton);
             LinearLayout telegramButton = view.findViewById(R.id.telegramButton);
             sheetDialog.setContentView(view);
             sheetDialog.show();
             telegramButton.setOnClickListener(vw -> {
-                Utils.saveImage(mixedEmoji, MainActivity.this, "\uD83D\uDE22", true);
-                sheetDialog.dismiss();
+                if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    Utils.saveImage(mixedEmoji, MainActivity.this, "\uD83D\uDE22", true);
+                    sheetDialog.dismiss();
+                } else {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                }
             });
             whatsappButton.setOnClickListener(vw -> {
                 sheetDialog.dismiss();
@@ -240,6 +233,20 @@ public class MainActivity extends AppCompatActivity {
                     mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider1, emojisSlider1SnapHelper, emojisSlider1LayoutManager)).get("date")).toString());
                 }
             }
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int visibleItemCount = emojisSlider1LayoutManager.getChildCount();
+                int totalItemCount = emojisSlider1LayoutManager.getItemCount();
+                int firstVisibleItemPosition = emojisSlider1LayoutManager.findFirstVisibleItemPosition();
+                EmojisSliderAdapter adapter = (EmojisSliderAdapter) Objects.requireNonNull(recyclerView.getAdapter());
+                if (firstVisibleItemPosition == 0) {
+                    adapter.addItems(0);
+                } else if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
+                    adapter.addItems(adapter.getItemCount());
+                }
+            }
         });
 
         emojisSlider2.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -249,6 +256,21 @@ public class MainActivity extends AppCompatActivity {
                     emote2 = Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider2, emojisSlider2SnapHelper, emojisSlider2LayoutManager)).get("emojiUnicode")).toString();
                     shouldShowEmoji(false);
                     mixEmojis(emote1, emote2, Objects.requireNonNull(supportedEmojisList.get(getRecyclerCurrentItem(emojisSlider2, emojisSlider2SnapHelper, emojisSlider2LayoutManager)).get("date")).toString());
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int visibleItemCount = emojisSlider2LayoutManager.getChildCount();
+                int totalItemCount = emojisSlider2LayoutManager.getItemCount();
+                int firstVisibleItemPosition = emojisSlider2LayoutManager.findFirstVisibleItemPosition();
+                EmojisSliderAdapter adapter = (EmojisSliderAdapter) Objects.requireNonNull(recyclerView.getAdapter());
+                if (firstVisibleItemPosition == 0) {
+                    adapter.addItems(0);
+                } else if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
+                    adapter.addItems(adapter.getItemCount());
                 }
             }
         });
@@ -262,7 +284,6 @@ public class MainActivity extends AppCompatActivity {
         EmojiMixer em = new EmojiMixer(emoji1, emoji2, date, this, new EmojiMixer.EmojiListener() {
             @Override
             public void onSuccess(String emojiUrl) {
-                finalEmojiURL = emojiUrl;
                 shouldEnableSave(true);
                 setImageFromUrl(mixedEmoji, emojiUrl);
             }
@@ -298,17 +319,9 @@ public class MainActivity extends AppCompatActivity {
     private void shouldEnableSave(boolean shouldShow) {
 
         if (shouldShow) {
-            new Handler().postDelayed(() -> {
-                saveEmoji.setEnabled(true);
-                //colorAnimator(saveEmoji, "#2A2B28", "#FF9D05", 250);
-                //saveEmoji.setTextColor(Color.parseColor("#422B0D"));
-                //saveEmoji.setIconTint(ColorStateList.valueOf(Color.parseColor("#422B0D")));
-            }, 1000);
+            new Handler().postDelayed(() -> saveEmoji.setEnabled(true), 1000);
         } else {
             saveEmoji.setEnabled(false);
-            //colorAnimator(saveEmoji, "#FF9D05", "#2A2B28", 250);
-            //saveEmoji.setTextColor(Color.parseColor("#A3A3A3"));
-            //saveEmoji.setIconTint(ColorStateList.valueOf(Color.parseColor("#A3A3A3")));
         }
     }
 
@@ -356,25 +369,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void downloadFile(String url) {
-        Toast.makeText(this, "Download started, check notifications bar.", Toast.LENGTH_SHORT).show();
-        String fileName = "MixedEmoji_" + new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.US).format(new Date());
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
-            try {
-                DownloadManager downloadmanager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                request.setMimeType(getContentResolver().getType(Uri.parse(url)));
-                request.addRequestHeader("cookie", CookieManager.getInstance().getCookie(url));
-                request.setTitle(fileName);
-                request.setDescription(getString(R.string.downloading));
-                request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/MixedEmojis/" + fileName + URLUtil.guessFileName(url, "", ""));
-                downloadmanager.enqueue(request);
-            } catch (Exception e) {
-                Log.e("Download error", e.toString());
-            }
-        });
-    }
 }

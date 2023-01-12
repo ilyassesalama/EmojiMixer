@@ -1,27 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@android:color/transparent"
-    android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginVertical="16dp"
-            android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="16dp"
+    android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="Export As Sticker"
-                android:textSize="20dp"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="16dp"
+                android:text="@string/export_as_sticker"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="#F7C02B"/>
 
@@ -30,15 +21,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:id="@+id/whatsappButton"
-                android:paddingLeft="16dp"
-                android:paddingTop="8dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="8dp">
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icons8_whatsapp" />
+                    android:src="@drawable/icons8_whatsapp"
+                    android:contentDescription="@string/whatsapp_icon" />
 
                 <Space
                     android:layout_width="20dp"
@@ -47,9 +37,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#000000"
-                    android:text="Export to WhatsApp"
-                    android:textSize="16dp" />
+                    android:text="@string/export_to_whatsapp"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
@@ -57,16 +46,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
                 android:id="@+id/telegramButton"
-                android:paddingTop="8dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="8dp">
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icons8_telegram_app" />
+                    android:src="@drawable/icons8_telegram_app"
+                    android:contentDescription="@string/telegram_icon" />
 
                 <Space
                     android:layout_width="20dp"
@@ -75,10 +63,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Export to Telegram"
-                    android:textColor="#000000"
-                    android:textSize="16dp" />
+                    android:text="@string/export_to_telegram"
+                    android:textSize="20sp" />
             </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
 </LinearLayout>

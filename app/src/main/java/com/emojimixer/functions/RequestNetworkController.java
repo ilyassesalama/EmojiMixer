@@ -1,5 +1,7 @@
 package com.emojimixer.functions;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
@@ -26,12 +28,8 @@ import okhttp3.Response;
 
 public class RequestNetworkController {
     public static final String GET = "GET";
-    public static final String POST = "POST";
-    public static final String PUT = "PUT";
-    public static final String DELETE = "DELETE";
 
     public static final int REQUEST_PARAM = 0;
-    public static final int REQUEST_BODY = 1;
 
     private static final int SOCKET_TIMEOUT = 15000;
     private static final int READ_TIMEOUT = 10000;
@@ -50,12 +48,14 @@ public class RequestNetworkController {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
             try {
-                final TrustManager[] trustAllCerts = new TrustManager[]{
+                @SuppressLint("CustomX509TrustManager") final TrustManager[] trustAllCerts = new TrustManager[]{
                         new X509TrustManager() {
+                            @SuppressLint("TrustAllX509TrustManager")
                             @Override
                             public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
                             }
 
+                            @SuppressLint("TrustAllX509TrustManager")
                             @Override
                             public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
                             }
@@ -75,7 +75,7 @@ public class RequestNetworkController {
                 builder.readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
                 builder.writeTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
                 builder.hostnameVerifier((hostname, session) -> true);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
 
             client = builder.build();
@@ -127,7 +127,7 @@ public class RequestNetworkController {
                     reqBuilder.url(url).headers(headerBuilder.build()).method(method, reqBody);
                 }
             } else {
-                RequestBody reqBody = RequestBody.create(okhttp3.MediaType.parse("application/json"), new Gson().toJson(requestNetwork.getParams()));
+                RequestBody reqBody = RequestBody.create(new Gson().toJson(requestNetwork.getParams()), okhttp3.MediaType.parse("application/json"));
 
                 if (method.equals(GET)) {
                     reqBuilder.url(url).headers(headerBuilder.build()).get();
@@ -140,12 +140,12 @@ public class RequestNetworkController {
 
             getClient().newCall(req).enqueue(new Callback() {
                 @Override
-                public void onFailure(Call call, final IOException e) {
+                public void onFailure(@NonNull Call call, @NonNull final IOException e) {
                     requestNetwork.getActivity().runOnUiThread(() -> requestListener.onErrorResponse(tag, e.getMessage()));
                 }
 
                 @Override
-                public void onResponse(Call call, @NonNull final Response response) throws IOException {
+                public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                     final String responseBody = Objects.requireNonNull(response.body()).string().trim();
                     requestNetwork.getActivity().runOnUiThread(() -> {
                         Headers b = response.headers();

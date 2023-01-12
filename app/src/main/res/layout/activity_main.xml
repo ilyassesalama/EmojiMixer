@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -10,11 +11,10 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_weight="3"
-        android:layout_height="match_parent">
+        android:layout_height="0dp">
         <LinearLayout
-            android:layout_weight="3"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -26,7 +26,6 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="@string/app_name"
-                android:textColor="#000"
                 android:textSize="23sp"
                 android:textStyle="bold" />
 
@@ -42,7 +41,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
@@ -96,7 +95,8 @@
                         android:gravity="center"
                         android:text="+"
                         android:textSize="40sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -144,7 +144,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="25dp"
-            android:text="Stickers"
+            android:text="@string/stickers"
             android:textAllCaps="false"
             android:textColor="#422B0D"
             android:textSize="14sp"
