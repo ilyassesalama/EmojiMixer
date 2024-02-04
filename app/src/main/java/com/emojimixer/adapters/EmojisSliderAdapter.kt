@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.TransitionOptions
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -22,7 +21,7 @@ class EmojisSliderAdapter(
     private val data: ArrayList<HashMap<String, Any>>,
     private val mContext: Context
 ) : RecyclerView.Adapter<EmojisSliderAdapter.ViewHolder>() {
-    val original = data.clone() as ArrayList<HashMap<String, Any>>
+    private val original = data.clone() as ArrayList<HashMap<String, Any>>
     init {
         mContext.getSharedPreferences("AppData", Activity.MODE_PRIVATE)
     }

@@ -8,13 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CenterZoomLayoutManager extends LinearLayoutManager {
 
-    private final float mShrinkAmount = 0.5f;
-    private final float mShrinkDistance = 1f;
-
-    public CenterZoomLayoutManager(Context context) {
-        super(context);
-    }
-
     public CenterZoomLayoutManager(Context context, int orientation, boolean reverseLayout) {
         super(context, orientation, reverseLayout);
     }
@@ -28,11 +21,14 @@ public class CenterZoomLayoutManager extends LinearLayoutManager {
 
             float midpoint = getWidth() / 2.f;
             float d0 = 0.f;
+            float mShrinkDistance = 1f;
             float d1 = mShrinkDistance * midpoint;
             float s0 = 1.f;
+            float mShrinkAmount = 0.5f;
             float s1 = 1.f - mShrinkAmount;
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
+                assert child != null;
                 float childMidpoint =
                         (getDecoratedRight(child) + getDecoratedLeft(child)) / 2.f;
                 float d = Math.min(d1, Math.abs(midpoint - childMidpoint));

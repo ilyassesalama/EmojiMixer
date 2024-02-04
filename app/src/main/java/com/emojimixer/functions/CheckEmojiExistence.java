@@ -30,7 +30,7 @@ public class CheckEmojiExistence implements Runnable {
     /**
      * This method is now deprecated because I made a better and faster way to get emojis. I didn't delete this one because I might use it later for a new algorithm
      * to check for new emojis.
-     * Use {@link #EmojiMixer} class instead.
+     * Use {@link EmojiMixer} class instead.
      */
     @Deprecated
     //
@@ -131,10 +131,6 @@ public class CheckEmojiExistence implements Runnable {
             shouldAbortTask = true;
         }
         return false;
-    }
-
-    public void setListener(EmojiListener listener) {
-        this.listener = listener;
     }
 
 

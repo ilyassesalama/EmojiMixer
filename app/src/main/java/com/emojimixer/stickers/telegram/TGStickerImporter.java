@@ -4,9 +4,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TGStickerImporter {
 
@@ -14,8 +14,8 @@ public class TGStickerImporter {
     private static final String CREATE_STICKER_PACK_EMOJIS_EXTRA = "STICKER_EMOJIS";
     private static final String CREATE_STICKER_PACK_IMPORTER_EXTRA = "IMPORTER";
 
-    private ArrayList<TGSticker> stickers;
-    private Context context;
+    private final ArrayList<TGSticker> stickers;
+    private final Context context;
 
     public TGStickerImporter(Context context, ArrayList<TGSticker> stickers){
         this.stickers = stickers;
@@ -49,11 +49,8 @@ public class TGStickerImporter {
         try {
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            // Define what your app should do if no activity can handle the intent.
+            Toast.makeText(context, "Telegram is not installed", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public List<TGSticker> getStickers() {
-        return stickers;
-    }
 }
