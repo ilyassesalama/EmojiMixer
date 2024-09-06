@@ -50,6 +50,8 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import com.mikepenz.aboutlibraries.LibsBuilder;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         exportEmoji.setOnClickListener(v ->{
-            BottomSheetDialog sheetDialog = new BottomSheetDialog(this);
+            /*BottomSheetDialog sheetDialog = new BottomSheetDialog(this);
             @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.sticker_bottom_sheet, null);
             LinearLayout whatsappButton = view.findViewById(R.id.whatsappButton);
             LinearLayout telegramButton = view.findViewById(R.id.telegramButton);
@@ -148,7 +150,9 @@ public class MainActivity extends AppCompatActivity {
             whatsappButton.setOnClickListener(vw -> {
                 sheetDialog.dismiss();
                 Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
-            });
+            });*/
+            LibsBuilder()
+    .start(MainActivity.this);
         });
 
         requestSupportedEmojisListener = new RequestNetwork.RequestListener() {

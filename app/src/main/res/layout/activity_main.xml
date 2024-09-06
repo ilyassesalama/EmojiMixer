@@ -144,6 +144,6 @@
             android:text="@string/stickers"
             android:textAllCaps="false"
             android:textSize="14sp"
-            app:icon="@drawable/ic_outline_file_upload_24" />
+            app:icon="@drawable/info_24" />
     </LinearLayout>
 </LinearLayout>
