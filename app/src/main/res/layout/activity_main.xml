@@ -56,9 +56,8 @@
                         android:layout_height="60dp"
                         android:layout_centerInParent="true"
                         android:indeterminate="true"
-                        app:indicatorColor="#F7C02B"
                         app:indicatorSize="60dp"
-                        app:trackCornerRadius="10dp"
+                        app:trackCornerRadius="30dp"
                         app:trackThickness="5dp" />
 
                     <ImageView
