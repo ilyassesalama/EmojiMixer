@@ -50,7 +50,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import com.mikepenz.aboutlibraries.LibsBuilder;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
