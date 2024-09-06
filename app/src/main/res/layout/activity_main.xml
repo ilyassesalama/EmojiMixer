@@ -128,11 +128,8 @@
             android:layout_marginBottom="25dp"
             android:text="@string/save_emoji"
             android:textAllCaps="false"
-            android:textColor="#422B0D"
             android:textSize="14sp"
-            app:backgroundTint="#F7C02B"
-            app:icon="@drawable/ic_outline_save_alt_24"
-            app:iconTint="#422B0D" />
+            app:icon="@drawable/ic_outline_save_alt_24" />
 
         <Space
             android:layout_width="20dp"
@@ -146,10 +143,7 @@
             android:layout_marginBottom="25dp"
             android:text="@string/stickers"
             android:textAllCaps="false"
-            android:textColor="#422B0D"
             android:textSize="14sp"
-            app:backgroundTint="#F7C02B"
-            app:icon="@drawable/ic_outline_file_upload_24"
-            app:iconTint="#422B0D" />
+            app:icon="@drawable/ic_outline_file_upload_24" />
     </LinearLayout>
 </LinearLayout>
