@@ -131,7 +131,7 @@
             android:textSize="14sp"
             app:icon="@drawable/ic_outline_save_alt_24" />
 
-        <Space
+     <!--   <Space
             android:layout_width="20dp"
             android:layout_height="wrap_content"/>
 
@@ -144,6 +144,6 @@
             android:text="@string/stickers"
             android:textAllCaps="false"
             android:textSize="14sp"
-            app:icon="@drawable/info_24" />
+            app:icon="@drawable/info_24" -->
     </LinearLayout>
 </LinearLayout>

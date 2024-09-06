@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         activityDesc = findViewById(R.id.activityDesc);
         mixedEmoji = findViewById(R.id.mixedEmoji);
         saveEmoji = findViewById(R.id.saveEmoji);
-        ExtendedFloatingActionButton exportEmoji = findViewById(R.id.export);
+        //ExtendedFloatingActionButton exportEmoji = findViewById(R.id.export);
         emojisSlider1 = findViewById(R.id.emojisSlider1);
         emojisSlider2 = findViewById(R.id.emojisSlider2);
         requestSupportedEmojis = new RequestNetwork(this);
@@ -132,8 +132,8 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        exportEmoji.setOnClickListener(v ->{
-            /*BottomSheetDialog sheetDialog = new BottomSheetDialog(this);
+      /*  exportEmoji.setOnClickListener(v ->{
+            BottomSheetDialog sheetDialog = new BottomSheetDialog(this);
             @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.sticker_bottom_sheet, null);
             LinearLayout whatsappButton = view.findViewById(R.id.whatsappButton);
             LinearLayout telegramButton = view.findViewById(R.id.telegramButton);
@@ -150,10 +150,8 @@ public class MainActivity extends AppCompatActivity {
             whatsappButton.setOnClickListener(vw -> {
                 sheetDialog.dismiss();
                 Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
-            });*/
-            LibsBuilder()
-    .start(MainActivity.this);
-        });
+            });
+        });*/
 
         requestSupportedEmojisListener = new RequestNetwork.RequestListener() {
             @Override
