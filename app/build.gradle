@@ -6,12 +6,12 @@ plugins {
 android {
     namespace 'com.emojimixer'
     useLibrary 'org.apache.http.legacy'
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId "com.emojimixer"
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 88
         versionName "3.3"
     }
