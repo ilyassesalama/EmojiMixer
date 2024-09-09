@@ -9,11 +9,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build the app
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleRelease
 
       - name: Upload debug apk
         uses: actions/upload-artifact@v3
 
         with:
-          name: apk-debug
-          path: app/build/outputs/apk/debug
+          name: apk-release
+          path: app/build/outputs/apk/release
