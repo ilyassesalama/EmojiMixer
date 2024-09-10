@@ -50,6 +50,8 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         activityDesc = findViewById(R.id.activityDesc);
         mixedEmoji = findViewById(R.id.mixedEmoji);
         saveEmoji = findViewById(R.id.saveEmoji);
-        ExtendedFloatingActionButton exportEmoji = findViewById(R.id.export);
+        //ExtendedFloatingActionButton exportEmoji = findViewById(R.id.export);
         emojisSlider1 = findViewById(R.id.emojisSlider1);
         emojisSlider2 = findViewById(R.id.emojisSlider2);
         requestSupportedEmojis = new RequestNetwork(this);
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        exportEmoji.setOnClickListener(v ->{
+      /*  exportEmoji.setOnClickListener(v ->{
             BottomSheetDialog sheetDialog = new BottomSheetDialog(this);
             @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.sticker_bottom_sheet, null);
             LinearLayout whatsappButton = view.findViewById(R.id.whatsappButton);
@@ -149,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 sheetDialog.dismiss();
                 Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
             });
-        });
+        });*/
 
         requestSupportedEmojisListener = new RequestNetwork.RequestListener() {
             @Override

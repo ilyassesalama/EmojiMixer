@@ -56,9 +56,8 @@
                         android:layout_height="60dp"
                         android:layout_centerInParent="true"
                         android:indeterminate="true"
-                        app:indicatorColor="#F7C02B"
                         app:indicatorSize="60dp"
-                        app:trackCornerRadius="10dp"
+                        app:trackCornerRadius="30dp"
                         app:trackThickness="5dp" />
 
                     <ImageView
@@ -128,13 +127,10 @@
             android:layout_marginBottom="25dp"
             android:text="@string/save_emoji"
             android:textAllCaps="false"
-            android:textColor="#422B0D"
             android:textSize="14sp"
-            app:backgroundTint="#F7C02B"
-            app:icon="@drawable/ic_outline_save_alt_24"
-            app:iconTint="#422B0D" />
+            app:icon="@drawable/ic_outline_save_alt_24" />
 
-        <Space
+     <!--   <Space
             android:layout_width="20dp"
             android:layout_height="wrap_content"/>
 
@@ -146,10 +142,7 @@
             android:layout_marginBottom="25dp"
             android:text="@string/stickers"
             android:textAllCaps="false"
-            android:textColor="#422B0D"
             android:textSize="14sp"
-            app:backgroundTint="#F7C02B"
-            app:icon="@drawable/ic_outline_file_upload_24"
-            app:iconTint="#422B0D" />
+            app:icon="@drawable/info_24" -->
     </LinearLayout>
 </LinearLayout>
