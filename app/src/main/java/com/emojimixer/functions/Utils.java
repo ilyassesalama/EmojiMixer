@@ -12,6 +12,8 @@ import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
@@ -138,4 +140,13 @@ public class Utils {
         return bitmap;
     }
 
+
+    private static final Handler mainHandler = new Handler(Looper.getMainLooper());
+
+    /**
+     * Run a Runnable on the UI thread without a Context.
+     */
+    public static void runOnUiThread(Runnable runnable) {
+        mainHandler.post(runnable);
+    }
 }

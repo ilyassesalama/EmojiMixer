@@ -1,5 +1,7 @@
 package com.emojimixer.functions;
 
+import static com.emojimixer.functions.Utils.runOnUiThread;
+
 import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
@@ -141,13 +143,13 @@ public class RequestNetworkController {
             getClient().newCall(req).enqueue(new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, @NonNull final IOException e) {
-                    requestNetwork.getActivity().runOnUiThread(() -> requestListener.onErrorResponse(tag, e.getMessage()));
+                    runOnUiThread(() -> requestListener.onErrorResponse(tag, e.getMessage()));
                 }
 
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull final Response response) throws IOException {
                     final String responseBody = Objects.requireNonNull(response.body()).string().trim();
-                    requestNetwork.getActivity().runOnUiThread(() -> {
+                    runOnUiThread(() -> {
                         Headers b = response.headers();
                         HashMap<String, Object> map = new HashMap<>();
                         for (String s : b.names()) {

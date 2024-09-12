@@ -1,7 +1,6 @@
 package com.emojimixer.activities;
 
 import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
-import static com.emojimixer.functions.UIMethods.shadAnim;
 import static com.emojimixer.functions.Utils.getRecyclerCurrentItem;
 import static com.emojimixer.functions.Utils.setSnapHelper;
 
@@ -40,11 +39,10 @@ import com.emojimixer.R;
 import com.emojimixer.adapters.EmojisSliderAdapter;
 import com.emojimixer.functions.CenterZoomLayoutManager;
 import com.emojimixer.functions.EmojiMixer;
+import com.emojimixer.functions.OffsetItemDecoration;
 import com.emojimixer.functions.RequestNetwork;
 import com.emojimixer.functions.RequestNetworkController;
 import com.emojimixer.functions.Utils;
-import com.emojimixer.functions.offsetItemDecoration;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.gson.Gson;
@@ -94,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         //ExtendedFloatingActionButton exportEmoji = findViewById(R.id.export);
         emojisSlider1 = findViewById(R.id.emojisSlider1);
         emojisSlider2 = findViewById(R.id.emojisSlider2);
-        requestSupportedEmojis = new RequestNetwork(this);
+        requestSupportedEmojis = new RequestNetwork();
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         mixedEmoji.setOnClickListener(view -> {
@@ -182,8 +180,8 @@ public class MainActivity extends AppCompatActivity {
         emojisSlider1.setClipToPadding(false);
         emojisSlider2.setClipToPadding(false);
 
-        emojisSlider1.addItemDecoration(new offsetItemDecoration(this));
-        emojisSlider2.addItemDecoration(new offsetItemDecoration(this));
+        emojisSlider1.addItemDecoration(new OffsetItemDecoration(this));
+        emojisSlider2.addItemDecoration(new OffsetItemDecoration(this));
 
         if (sharedPref.getString("supportedEmojisList", "").isEmpty()) {
             requestSupportedEmojis.startRequestNetwork(RequestNetworkController.GET, "https://ilyassesalama.github.io/EmojiMixer/emojis/supported_emojis.json", "", requestSupportedEmojisListener);
@@ -305,17 +303,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void shouldShowEmoji(boolean shouldShow) {
         isFineToUseListeners = true;
-        if (shouldShow) {
-            shadAnim(mixedEmoji, "scaleY", 1, 300);
-            shadAnim(mixedEmoji, "scaleX", 1, 300);
-            shadAnim(progressBar, "scaleY", 0, 300);
-            shadAnim(progressBar, "scaleX", 0, 300);
-        } else {
-            shadAnim(mixedEmoji, "scaleY", 0, 300);
-            shadAnim(mixedEmoji, "scaleX", 0, 300);
-            shadAnim(progressBar, "scaleY", 1, 300);
-            shadAnim(progressBar, "scaleX", 1, 300);
-        }
+//        if (shouldShow) {
+//            shadAnim(mixedEmoji, "scaleY", 1, 300);
+//            shadAnim(mixedEmoji, "scaleX", 1, 300);
+//            shadAnim(progressBar, "scaleY", 0, 300);
+//            shadAnim(progressBar, "scaleX", 0, 300);
+//        } else {
+//            shadAnim(mixedEmoji, "scaleY", 0, 300);
+//            shadAnim(mixedEmoji, "scaleX", 0, 300);
+//            shadAnim(progressBar, "scaleY", 1, 300);
+//            shadAnim(progressBar, "scaleX", 1, 300);
+//        }
     }
 
     private void shouldEnableSave(boolean shouldShow) {
@@ -352,23 +350,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void changeActivityDesc(String text) {
-        shadAnim(activityDesc, "alpha", 0, 300);
-        shadAnim(activityDesc, "translationY", -50, 300);
-        new Handler().postDelayed(() -> {
-            activityDesc.setText(text);
-            shadAnim(activityDesc, "alpha", 1, 300);
-            shadAnim(activityDesc, "translationY", 0, 300);
-            new Handler().postDelayed(() -> {
-                shadAnim(activityDesc, "alpha", 0, 300);
-                shadAnim(activityDesc, "translationY", -50, 300);
-                new Handler().postDelayed(() -> {
-                    activityDesc.setText(R.string.activity_hint_1);
-                    shadAnim(activityDesc, "alpha", 1, 300);
-                    shadAnim(activityDesc, "translationY", 0, 300);
-                }, 400);
-            }, 2000);
-        }, 400);
+//        shadAnim(activityDesc, "alpha", 0, 300);
+//        shadAnim(activityDesc, "translationY", -50, 300);
+//        new Handler().postDelayed(() -> {
+//            activityDesc.setText(text);
+//            shadAnim(activityDesc, "alpha", 1, 300);
+//            shadAnim(activityDesc, "translationY", 0, 300);
+//            new Handler().postDelayed(() -> {
+//                shadAnim(activityDesc, "alpha", 0, 300);
+//                shadAnim(activityDesc, "translationY", -50, 300);
+//                new Handler().postDelayed(() -> {
+//                    activityDesc.setText(R.string.activity_hint_1);
+//                    shadAnim(activityDesc, "alpha", 1, 300);
+//                    shadAnim(activityDesc, "translationY", 0, 300);
+//                }, 400);
+//            }, 2000);
+//        }, 400);
     }
-
-
 }

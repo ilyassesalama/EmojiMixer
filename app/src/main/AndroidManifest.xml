@@ -31,10 +31,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".activities.DebugActivity"
-            android:screenOrientation="unspecified" />
-
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
