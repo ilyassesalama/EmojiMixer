@@ -1,148 +1,98 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:weightSum="3"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="3"
-        android:layout_height="0dp">
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="ContentDescription">
+
+        <TextView
+            android:id="@+id/statusTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/activityTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/app_name"
-                android:textSize="23sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/activityDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="60dp"
-                android:gravity="center"
-                android:text="@string/swipe_left_or_right_to_mix_emojis"
-                android:textSize="14sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="200dp"
-                    android:layout_height="200dp">
-
-                    <com.google.android.material.progressindicator.CircularProgressIndicator
-                        android:id="@+id/progressBar"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_centerInParent="true"
-                        android:indeterminate="true"
-                        app:indicatorSize="60dp"
-                        app:trackCornerRadius="30dp"
-                        app:trackThickness="5dp" />
-
-                    <ImageView
-                        android:id="@+id/mixedEmoji"
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/shocked" />
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:orientation="vertical">
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/emojisSlider1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fadingEdge="horizontal"
-                            android:fadingEdgeLength="30dp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:gravity="center"
-                        android:text="+"
-                        android:textSize="40sp"
-                        android:textStyle="bold"
-                        tools:ignore="HardcodedText" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/emojisSlider2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fadingEdge="horizontal"
-                            android:fadingEdgeLength="30dp" />
-
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_height="wrap_content">
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/saveEmoji"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:layout_marginBottom="25dp"
-            android:text="@string/save_emoji"
-            android:textAllCaps="false"
-            android:textSize="14sp"
-            app:icon="@drawable/ic_outline_save_alt_24" />
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textSize="23sp"
+            android:textStyle="bold" />
 
-     <!--   <Space
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"/>
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/export"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/statusSubtitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="25dp"
-            android:text="@string/stickers"
-            android:textAllCaps="false"
-            android:textSize="14sp"
-            app:icon="@drawable/info_24" -->
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/main_swipe_to_mix"
+            android:textSize="14sp" />
+
+
+        <RelativeLayout
+            android:id="@+id/mixedEmojiLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progressBar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerInParent="true"
+                android:indeterminate="true"
+                app:indicatorSize="60dp"
+                app:trackCornerRadius="30dp"
+                app:trackThickness="5dp" />
+
+            <ImageView
+                android:id="@+id/mixedEmoji"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/shocked" />
+        </RelativeLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/emojisSlider1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:requiresFadingEdge="horizontal"
+            tools:itemCount="1"
+            tools:listitem="@layout/view_emojis_slider_item" />
+
+        <TextView
+            android:id="@+id/emojisPlusTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="+"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/emojisSlider2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:requiresFadingEdge="horizontal"
+            tools:itemCount="1"
+            tools:listitem="@layout/view_emojis_slider_item" />
+
     </LinearLayout>
-</LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/saveEmoji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:text="@string/btn_save_emoji"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        app:icon="@drawable/ic_outline_save_alt_24" />
+</RelativeLayout>

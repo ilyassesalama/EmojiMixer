@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.google.android.material.color.DynamicColors;
 
-public class ApplicationLoader extends Application {
+public class EMApplication extends Application {
     private static Application instance;
 
     @Override
@@ -13,5 +13,9 @@ public class ApplicationLoader extends Application {
         super.onCreate();
         instance = this;
         DynamicColors.applyToActivitiesIfAvailable(this);
+    }
+
+    public static Application getInstance() {
+        return instance;
     }
 }

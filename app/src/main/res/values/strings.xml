@@ -1,16 +1,15 @@
 <resources>
     <string name="app_name" translatable="false">EmojiMixer</string>
-    <string name="activity_hint_1">Swipe left or right to mix emojis</string>
-    <string name="downloading">Downloading your cool mixed emoji&#8230;</string>
-    <string name="swipe_left_or_right_to_mix_emojis">Swipe left or right to mix emojis</string>
-    <string name="save_emoji">Save emoji</string>
-    <string name="exporting">Exporting</string>
-    <string name="saved">Successfully Saved</string>
-    <string name="failed_to_save">Failed to Save</string>
-    <string name="whatsapp_icon">Whatsapp icon</string>
-    <string name="export_to_whatsapp">Export to WhatsApp</string>
-    <string name="telegram_icon">Telegram icon</string>
-    <string name="export_to_telegram">Export to Telegram</string>
-    <string name="export_as_sticker">Export As Sticker</string>
-    <string name="stickers">About</string>
+
+    <string name="main_swipe_to_mix">Swipe left or right to mix emojis</string>
+
+    <string name="btn_save_emoji">Save emoji</string>
+
+    <string name="msg_downloading">Downloading your cool mixed emoji&#8230;</string>
+    <string name="msg_downloading_error">Error downloading your mixed emoji</string>
+    <string name="msg_downloading_success">Emoji downloaded successfully</string>
+    <string name="msg_no_internet">No internet connection</string>
+    <string name="msg_no_internet_subtitle">Please check your internet connection</string>
+    <string name="msg_no_emoji_combination">No combination found</string>
+    <string name="msg_no_emoji_combination_subtitle">Swipe left or right to try another combination</string>
 </resources>

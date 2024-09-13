@@ -1,4 +1,4 @@
-package com.emojimixer.functions;
+package com.emojimixer.classes.emojimixer;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,27 +10,35 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class EmojiMixer implements Runnable {
+    // constants for failure reasons
+    public static final int NO_INTERNET = 0;
+    public static final int NO_EMOJI_FOUND = 1;
 
-    private final String emoji_1;
-    private final String emoji_2;
-    private final String creation_date;
-    private final Activity mContext;
+    private String emoji_1;
+    private String emoji_2;
+    private String creation_date;
+    private final Activity context;
     private final String LOG = "EMOJI_LOGS";
     public String API = "https://www.gstatic.com/android/keyboard/emojikitchen/";
     public EmojiListener listener;
     private String finalURL;
-    private String failure_reason;
+    private int failure_reason;
     private boolean isTaskSuccessful = false;
     private boolean shouldAbortTask = false;
 
-    public EmojiMixer(String emoji1, String emoji2, String date, Activity context, EmojiListener emojiListener) {
-        this.listener = emojiListener;
-        mContext = context;
-        emoji_1 = emoji1;
-        emoji_2 = emoji2;
-        creation_date = date;
+    public EmojiMixer(Activity context) {
+        this.context = context;
     }
 
+    public void mixEmojis(String emoji1, String emoji2, String date, EmojiListener emojiListener) {
+        this.emoji_1 = emoji1;
+        this.emoji_2 = emoji2;
+        this.creation_date = date;
+        this.listener = emojiListener;
+
+        Thread thread = new Thread(this);
+        thread.start();
+    }
 
     @Override
     public void run() {
@@ -38,7 +46,7 @@ public class EmojiMixer implements Runnable {
         if (isConnected()) {
             checkIfImageEmojiInServer(emoji_1, emoji_2, creation_date);
         }
-        mContext.runOnUiThread(() -> {
+        context.runOnUiThread(() -> {
             if (isTaskSuccessful) {
                 if (listener != null) {
                     listener.onSuccess(finalURL);
@@ -76,7 +84,7 @@ public class EmojiMixer implements Runnable {
                 Log.d(LOG, "Found a combination at:  " + finalURL);
             } else {
                 Log.d(LOG, "Couldn't find a combination in the reversed order, task failed.");
-                failure_reason = "No combination found for selected emojis.";
+                failure_reason = NO_EMOJI_FOUND;
                 isTaskSuccessful = false;
             }
         }
@@ -98,13 +106,13 @@ public class EmojiMixer implements Runnable {
     }
 
     public boolean isConnected() {
-        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null) {
             return true;
         } else {
             Log.d(LOG, "Device is not connected.");
-            failure_reason = "Your device is not connected to the internet.";
+            failure_reason = NO_INTERNET;
             isTaskSuccessful = false;
             shouldAbortTask = true;
         }
@@ -119,6 +127,6 @@ public class EmojiMixer implements Runnable {
     public interface EmojiListener {
         void onSuccess(String emojiUrl);
 
-        void onFailure(String failureReason);
+        void onFailure(int failureReason);
     }
 }
